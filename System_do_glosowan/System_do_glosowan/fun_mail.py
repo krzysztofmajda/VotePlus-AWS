@@ -1,4 +1,4 @@
-from System_do_glosowan import app, fun, fun_base
+import fun, fun_base
 from flask_mail import Mail, Message
 
 app.config['MAIL_SERVER']='smtp.gmail.com'

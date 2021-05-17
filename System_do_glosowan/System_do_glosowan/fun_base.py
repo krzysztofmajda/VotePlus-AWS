@@ -1,4 +1,4 @@
-from System_do_glosowan import app, fun, fun_mail
+import fun, fun_mail
 from flask_mysqldb import MySQL
 
 app.config['MYSQL_HOST']='localhost'
