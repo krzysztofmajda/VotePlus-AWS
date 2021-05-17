@@ -1,4 +1,4 @@
-import app, fun_base
+from System_do_glosowan import app, fun_base
 
 def register_fail(i):
     out = [" ", "Konto o takiej nazwie użytkownika już istnieje!", "Konto o takim adresie e-mail już istnieje!"]
