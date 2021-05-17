@@ -51,23 +51,23 @@
                         {{info[5]}}
                     </div>
                     <div class="go">
-                        <a href="{{ url_for('zalogowany') }}"><input type="button" id="log_in" value="Moje konto"></a>
+                        <a href="myhref"><input type="button" id="log_in" value="Moje konto"></a>
                     </div>
                     <div class="go">
-                        <a href="{{url_for('wyloguj')}}"><input type="button" id="log_out" value="Wyloguj się"></a>
+                        <a href="myhref"><input type="button" id="log_out" value="Wyloguj się"></a>
                     </div>
                     {% else %}
                     <div class="system">
                         {{info[3]}}
                     </div>
                     <div class="go">
-                        <a href="{{ url_for('logowanie') }}"><input type="button" id="log_in" value="Zaloguj się"></a>
+                        <a href="myhref"><input type="button" id="log_in" value="Zaloguj się"></a>
                     </div>
                     <div class="system">
                         {{info[4]}}
                     </div>
                     <div class="go">
-                        <a href="{{ url_for('rejestracja') }}"><input type="button" id="sign_in"
+                        <a href="myhref"><input type="button" id="sign_in"
                                                                       value="Zarejestruj się"></a>
                     </div>
                     {% endif %}
