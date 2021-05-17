@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="../static/content/style_wyboru_glosowania.css">
+<link rel="icon"
+      type="image/png"
+      href="/static/images/favicon.ico">
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VotePlus</title>
+</head>
+<body>
+<div id="container">
+    <div id="logo">
+        <img src="../static/images/logo.png" alt="Logo aplikacji">
+    </div>
+    <div class="panel_wrapper">
+        <div class="vote_list">
+            <div class="title">
+                Wybierz lub wyszukaj głosowanie które chcesz edytować:
+            </div>
+            <form method="POST">
+                <div id="vote">
+                    <input type="text" id="template" name="template"
+                           placeholder="Tu wpisz tytuł głosowania które chcesz wyszukać">
+                    <input type="submit" value="Szukaj" id="search">
+                </div>
+            </form>
+            <div class="title">
+                Lista głosowań które możesz edytować:
+            </div>
+            <ul>
+                {% for poll in polls %}
+                <li class="record">
+                    <div class="text">
+                        {{poll[1]}} {{poll[2]}}
+                    </div>
+                    <form method="POST">
+                        <div class="edit">
+                            <input type="hidden" name="edit_id" value="{{poll[0]}}">
+                            <button type="submit" class="edit_button">Edytuj</button>
+                        </div>
+                    </form>
+                </li>
+                {% else %}
+                <li class="record">
+                    <div class="text">
+                        Brak rekordów
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div id="footer">
+        <br>
+        <a href="{{url_for('zalogowany')}}"><input type="button" id="main_page" value="Panel główny"></a>
+        <p>VotePlus &copy; 2021</p>
+        <br>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/content/style_edycji.css">
+<link rel="icon"
+      type="image/png"
+      href="/static/images/favicon.ico">
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>VotePlus</title>
+</head>
+<body>
+<div id="container">
+    <div id="logo">
+        <img src="/static/images/logo.png" alt="Logo aplikacji">
+    </div>
+    <div class="panel_wrapper">
+        <div id="who">
+            Edytujesz dane: <br> <br>
+            Nazwa użytkownika: {{data[4]}} <br>
+            Imię i nazwisko: {{data[0]}} {{data[1]}} <br>
+            Płeć: {{data[2]}} <br>
+            Rok urodzenia: {{data[3]}} <br>
+            E-mail: {{data[5]}} <br>
+            {% if data[6] == None %}
+            Rola: Brak <br>
+            {% else %}
+            Rola: {{data[6]}} <br>
+            {% endif %}
+            <br>{{info}}
+        </div>
+        <form method="post">
+            <div id="panel">
+                <label for="user_name" id="user_name_label">Imię:</label>
+                <input type="text" id="user_name" name="user_name">
+                <br>
+                <label for="user_surname" id="user_surname_label">Nazwisko:</label>
+                <input type="text" id="user_surname" name="user_surname">
+                <br>
+                <label for="role" id="role_label">Tworzenie głosowań:</label>
+                <select id="role" name="role">
+                    <option selected></option>
+                    <option value="Tak">Tak</option>
+                    <option value="Nie">Nie</option>
+                </select>
+                <label for="user_sex" id="user_sex_label">Płeć:</label>
+                <select id="user_sex" name="user_sex">
+                    <option selected></option>
+                    <option value="Kobieta">Kobieta</option>
+                    <option value="Mężczyzna">Mężczyzna</option>
+                    <option value="Inna">Inna</option>
+                    <option value="Nie chcę podawać">Nie chcę podawać</option>
+                </select>
+                <label for="lata" id="user_year_label">Rok urodzenia:</label>
+                <div id="lata"></div>
+                <div id="lower">
+                    <a href="{{url_for('anuluj_edycje_uzytkownika')}}"><input type="button" id="do_nothing"
+                                                                              value="Powrót"></a>
+                    <input type="submit" id="write" value="Zapisz">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+        <br>
+        <p>VotePlus &copy; 2021</p>
+        <br>
+    </div>
+</div>
+<script type="text/javascript" src="/static/scripts/scripts.js"></script>
+</body>
+</html>

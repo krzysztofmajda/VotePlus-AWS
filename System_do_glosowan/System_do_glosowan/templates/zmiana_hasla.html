@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="/static/content/style_rejestracji.css">
+<link rel="icon"
+      type="image/png"
+      href="/static/images/favicon.ico">
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>VotePlus</title>
+</head>
+<body>
+<div id="logo">
+    <img src="/static/images/logo.png" alt="Logo aplikacji" class="logo">
+</div>
+<div class="info">
+    <p>{{info}}</p>
+</div>
+<div class="panel">
+    <form method="post" name=registerForm onSubmit="return checkPassword(this)">
+        <table>
+            <tr>
+                <td class="left">
+                    <label for="previous_password" class="label">Dotychczasowe hasło:</label>
+                </td>
+                <td class="right">
+                    <input type="password" id="previous_password" class="formField" name="previous_password" minlength=2
+                           maxlength=100 required>
+                </td>
+            </tr>
+            <tr>
+                <td class="left">
+                    <label for="new_password" class="label">Nowe hasło:</label>
+                </td>
+                <td class="right">
+                    <input type="password" id="new_password" class="formField" name="new_password" minlength=8
+                           maxlength=255 required>
+                </td>
+            </tr>
+            <tr>
+                <td class="left">
+                    <label for="new_password_repeat" class="label">Powtórz nowe hasło:</label>
+                </td>
+                <td class="right">
+                    <input type="password" id="new_password_repeat" class="formField" name="new_password_repeat"
+                           minlength=8 maxlength=255 required>
+                </td>
+            </tr>
+            <tr>
+                <td class="left">
+                    <label for="passwordComplexity" class="label">Siła hasła:</label>
+                </td>
+                <td class="right">
+                    <progress id="passwordComplexity" value="0"></progress>
+                </td>
+            </tr>
+        </table>
+        <div id="lower">
+            <a href="{{ url_for('zalogowany') }}" class="lowerButton"><input type="button" id="cancel"
+                                                                             class="customButton" value="Anuluj"></a>
+            <input type="submit" id="log_in" class="customButton" value="Zmień">
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="/static/scripts/scripts.js">
+</script>
+</body>
+</html>
+<footer>
+    <a href="{{ url_for('strona_startowa') }}"><input type="button" id="main_page" value="Strona główna"></a>
+    <p>VotePlus &copy; 2021</p>
+</footer>
