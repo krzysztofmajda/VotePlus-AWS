@@ -4,7 +4,7 @@ Routes and views for the flask application.
 
 import numpy as np
 from flask import render_template, flash, redirect, url_for, request, session
-import app, fun_base, fun, message, fun_mail
+import fun_base, fun, message, fun_mail
 
 PYTHONIOENCODING="UTF-8"
 
