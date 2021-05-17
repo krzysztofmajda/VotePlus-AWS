@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/strona_startowa')
 def strona_startowa():
-    return render_template('strona_startowa.html', info=message.main_page(), loged_in=loged_in)
+    return render_template('strona_startowa.html', info=message.main_page())
 
 
 if __name__ == '__main__':
