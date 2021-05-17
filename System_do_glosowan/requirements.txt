@@ -1,1 +1,3 @@
 Flask~=1.1
+flask-mail~=0.8
+flask_mysqldb~=0.12
