@@ -1,1 +1,1 @@
-web: gunicorn app:vote-plus
+web: gunicorn run:app
