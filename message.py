@@ -1,5 +1,3 @@
-import app
-
 
 def main_page():
     out = [" VotePlus to nasz autorski system do obsługi głosowań.", "Nie wymaga instalacji, gdyż zarządzany jest w całości z poziomu przeglądarki internetowej. Przeprowadzaj głosowania łatwiej niż kiedykolwiek wcześniej oraz prezentuj wyniki na przystępnych wykresach!",
