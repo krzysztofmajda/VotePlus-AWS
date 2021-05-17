@@ -1,1 +1,1 @@
-web: gunicorn vote-plus:views
+web: gunicorn __init__:app
