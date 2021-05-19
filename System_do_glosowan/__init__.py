@@ -11,4 +11,4 @@ import System_do_glosowan.fun
 import System_do_glosowan.fun_mail
 import System_do_glosowan.message
 
-app.secret_key = fun.random_string(50)
+#app.secret_key = fun.random_string(50)
