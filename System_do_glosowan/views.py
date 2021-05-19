@@ -719,5 +719,6 @@ def wyniki_glosowania(): #tmp
 
 #przekierowanie, gdy adres URL nie istnieje
 @app.errorhandler(404)
+@app.errorhandler(500)
 def strona_nie_istnieje(e):
     return redirect('/strona_startowa')
