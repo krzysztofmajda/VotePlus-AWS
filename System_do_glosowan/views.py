@@ -626,6 +626,13 @@ def usun_glosowanie():
     return render_template('usuniecie_glosowania.html', questions=fun_base.get_all_question_with_answers_for_poll(session['delete_poll_id']),
                            data=fun_base.get_poll_full_info(session['delete_poll_id']), info=message.delete_poll_info())
 
+@app.route('/anulowanie_usuniecia_glosowania')
+def anulowanie_usuniecia_glosowania():
+    if not 'delete_poll_id' in session:
+        return redirect('/glosowanie_do_usuniecia')
+    session.pop('delete_poll_id', None)
+    return redirect('/glosowanie_do_usuniecia')
+
 @app.route('/glosowanie_do_sledzenia', methods=['GET','POST'])
 def glosowanie_do_sledzenia():
     if not ('log_in_admin' in session or 'log_in_editor' in session):
