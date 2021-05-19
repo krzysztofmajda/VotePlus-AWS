@@ -3,7 +3,6 @@ import hashlib
 import string
 import random
 from datetime import datetime, timedelta
-import pytz
 
 def hashing(password):
     hash = hashlib.sha512(password.encode()).hexdigest()
@@ -33,13 +32,11 @@ def random_string(n):
     return out
 
 def generate_current_datetime():
-    zone = pytz.timezone('Europe/Warsaw')
-    date = datetime.now(zone)
+    date = datetime.now()
     return date.strftime('%Y-%m-%d %H:%M:%S')
 
 def inactivate_user_to_remove(users):
-    zone = pytz.timezone('Europe/Warsaw')
-    date_time = datetime.now(zone) - timedelta(hours=1)
+    date_time = datetime.now() - timedelta(hours=1)
     to_remove = []
     for user in users:
         if user[1] <= date_time:
