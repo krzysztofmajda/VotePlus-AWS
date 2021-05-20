@@ -36,11 +36,11 @@ def logowanie():
                 return redirect('/aktywacja_konta')
         else:
             session['log_error'] = "Error"
-            return redirect('/blad_log')
+            return redirect('/blad_logowania')
     return render_template('logowanie.html', info=message.loging_info())
 
-@app.route('/blad_log')
-def blad_log():
+@app.route('/blad_logowania')
+def blad_logowania():
     if not 'log_error' in session:
         return redirect('/logowanie')
     return render_template('blad.html', info=message.log_in_fail_info(), site_type='logowanie')
@@ -63,7 +63,7 @@ def rejestracja():
             return redirect('/udana_rejestracja')
         else:
             session['reg_error_id'] = out[0]
-            return redirect('/blad_rej')
+            return redirect('/blad_rejestracji')
     return render_template('rejestracja.html', info=message.register_info())
 
 @app.route('/blad_rejestracji')
