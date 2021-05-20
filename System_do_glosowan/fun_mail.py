@@ -1,12 +1,22 @@
 from System_do_glosowan import app, fun
 from flask_mail import Mail, Message
 
-app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'voteplus.info@gmail.com'
-app.config['MAIL_PASSWORD'] = fun.pass_decoder("01010000011100100110111101101010011001010110101101110100010010010101000001011010001100100101111100110010001100000011001000110001")
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+#app.config['MAIL_SERVER']='smtp.gmail.com'
+#app.config['MAIL_PORT'] = 587
+#app.config['MAIL_USERNAME'] = ''
+#app.config['MAIL_PASSWORD'] = fun.pass_decoder("01010000011100100110111101101010011001010110101101110100010010010101000001011010001100100101111100110010001100000011001000110001")
+#app.config['MAIL_USE_TLS'] = True
+#app.config['MAIL_USE_SSL'] = False
+
+app.config.update(dict(
+    DEBUG = True,
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT = 587,
+    MAIL_USE_TLS = True,
+    MAIL_USE_SSL = False,
+    MAIL_USERNAME = 'voteplus.info@gmail.com',
+    MAIL_PASSWORD = fun.pass_decoder("01010000011100100110111101101010011001010110101101110100010010010101000001011010001100100101111100110010001100000011001000110001"),
+))
 
 mail = Mail(app)
 
@@ -21,7 +31,7 @@ def welcome_message(email,name,username,surname,sex,birth_year, code):
     line5 = "Jeżeli którekolwiek z przedstawionych powyżej danych się nie zgadzają lub chcesz uzyskać prawo do tworzenia głosowania, prosimy o odpowiedź na tę wiadomość."
     msg = Message("Dziękujemy za rejestrację", sender=mymail, recipients=[email])
     msg.html = (line1 + line2 + line3 + line4 + line5 + footer)
-    #mail.send(msg)
+    mail.send(msg)
     return "Sent"
 
 def password_reset(email,username,code):
