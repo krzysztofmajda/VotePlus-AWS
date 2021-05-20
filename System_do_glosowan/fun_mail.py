@@ -2,11 +2,11 @@ from System_do_glosowan import app, fun
 from flask_mail import Mail, Message
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
+app.config['MAIL_PORT'] = 587
 app.config['MAIL_USERNAME'] = 'voteplus.info@gmail.com'
 app.config['MAIL_PASSWORD'] = fun.pass_decoder("01010000011100100110111101101010011001010110101101110100010010010101000001011010001100100101111100110010001100000011001000110001")
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app)
 
