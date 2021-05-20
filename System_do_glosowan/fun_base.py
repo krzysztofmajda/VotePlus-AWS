@@ -178,7 +178,7 @@ def delete_user(uid):
     con = mysql.connection
     con.autocommit = False
     cur = con.cursor()
-    cur.execute('SELECT name, surname, sex, birth_year,username,`e-mail` FROM users WHERE user_id = (%s)',(pid,))
+    cur.execute('SELECT name, surname, sex, birth_year,username,`e-mail` FROM users WHERE user_id = (%s)',(uid,))
     data = cur.fetchone()
 
     cur.execute('DELETE FROM user_role WHERE user_id = (%s)',(uid,))
