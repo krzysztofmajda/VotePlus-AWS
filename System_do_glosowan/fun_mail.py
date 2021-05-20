@@ -21,7 +21,7 @@ def welcome_message(email,name,username,surname,sex,birth_year, code):
     line5 = "Jeżeli którekolwiek z przedstawionych powyżej danych się nie zgadzają lub chcesz uzyskać prawo do tworzenia głosowania, prosimy o odpowiedź na tę wiadomość."
     msg = Message("Dziękujemy za rejestrację", sender=mymail, recipients=[email])
     msg.html = (line1 + line2 + line3 + line4 + line5 + footer)
-    #mail.send(msg)
+    mail.send(msg)
     return "Sent"
 
 def password_reset(email,username,code):
