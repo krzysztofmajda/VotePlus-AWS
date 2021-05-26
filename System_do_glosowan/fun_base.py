@@ -182,7 +182,7 @@ def delete_user(uid):
     data = cur.fetchone()
 
     cur.execute('DELETE FROM user_role WHERE user_id = (%s)',(uid,))
-    cur.execute('DELETE FROM user_group WHERE user_id = (%s)',(uid,))
+    cur.execute('UPDATE user_group SET user_id=NULL WHERE user_id = (%s)',(uid,))
     cur.execute('DELETE FROM vote WHERE user_id = (%s)',(uid,))
     cur.execute('DELETE FROM password WHERE user_id = (%s)',(uid,))
     cur.execute('UPDATE poll SET creator=NULL WHERE creator = (%s)',(uid,))
@@ -304,7 +304,9 @@ def add_user_for_poll(pid, poll_id):
     con = mysql.connection
     con.autocommit = False
     cur = con.cursor()
-    cur.execute('INSERT INTO user_group(user_id, group_id, if_voted) VALUES(%s, %s, \'0\')',(pid,poll_id))
+    cur.execute('SELECT MAX(user_group_id) FROM user_group')
+    max_id = cur.fetchone()[0]+1
+    cur.execute('INSERT INTO user_group(user_group_id, user_id, group_id, if_voted) VALUES(%s, %s, %s, \'0\')',(max_id,pid,poll_id))
     con.commit()
     cur.close()
     return 0
