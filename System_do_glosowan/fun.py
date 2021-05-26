@@ -154,7 +154,7 @@ def generate_csv(result):
     return codecs.BOM_UTF8.decode("utf8") + codecs.BOM_UTF8.decode() + output.getvalue()
 
 def generate_pdf(html):
-    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    path_wkhtmltopdf = './bin/wkhtmltopdf'
     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
     pdf = pdfkit.from_string(html, False, configuration=config)
     return pdf
