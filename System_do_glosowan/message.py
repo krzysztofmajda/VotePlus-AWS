@@ -33,10 +33,10 @@ def user_page_info():
            "Tu możesz na bierząco śledzić przebieg oraz statystyki głosowania.",
            "Tu możesz zmienić swoje hasło do systemu.", "Tu możesz wylogować sie z systemu.",
            "Tu możesz nadać bądź odebrać użytkownikom uprawnienia do funkcjonalności systemu oraz usunąć konta użytkowników.",
-           "Tu możesz usunąć głosowanie.", "Tu możesz sprawdzić bierzące informacje o systemie.", "Jesteś zalogowany jako:",
-           "Lista aktywnych głosowań:", "Głosowanie aktywne do:", "Brak aktywnych głosowań", "Zapraszamy wkrótce",
-           "Utwórz głosowanie", "Edytuj głosowanie", "Śledź przebieg głosowania", "Zarządzaj użytkownikami",
-           "Usuń głosowanie", "Informacje o systemie", "Wyniki i statystyki", "Zmień hasło", "Wyloguj"]
+           "Tu możesz usunąć lub unieważnić głosowanie.", "Tu możesz sprawdzić bierzące informacje o systemie.",
+           "Jesteś zalogowany jako:", "Lista aktywnych głosowań:", "Głosowanie aktywne do:", "Brak aktywnych głosowań",
+           "Zapraszamy wkrótce", "Utwórz głosowanie", "Edytuj głosowanie", "Śledź przebieg głosowania", "Zarządzaj użytkownikami",
+           "Usuń lub unieważnij głosowanie", "Informacje o systemie", "Wyniki i statystyki", "Zmień hasło", "Wyloguj"]
     return out
 
 def change_password_info():
@@ -113,15 +113,18 @@ def delete_answer_info(question):
     return out
 
 def poll_to_edit_info():
-    out = ["Wybierz lub wyszukaj głosowanie które chcesz edytować:", "Lista głosowań które możesz edytować:", "Brak rekordów"]
+    out = ["Wybierz lub wyszukaj głosowanie które chcesz edytować:", "Lista głosowań które możesz edytować:", "Brak rekordów",
+           "Tu wpisz tytuł głosowania, które chcesz wyszukać"]
     return out
 
 def poll_to_delete_info():
-    out = ["Wybierz lub wyszukaj głosowanie które chcesz usunąć:", "Lista głosowań które możesz usunąć:", "Brak rekordów"]
+    out = ["Wybierz lub wyszukaj głosowanie które chcesz usunąć lub unieważnić:", "Lista głosowań które możesz usunąć lub unieważnić:",
+           "Brak rekordów", "Tu wpisz tytuł głosowania, które chcesz wyszukać"]
     return out
 
 def poll_to_tracking_info():
-    out = ["Wybierz lub wyszukaj głosowanie które chcesz śledzić:", "Lista głosowań które możesz śledzić:", "Brak rekordów"]
+    out = ["Wybierz lub wyszukaj głosowanie które chcesz śledzić:", "Lista głosowań które możesz śledzić:", "Brak rekordów",
+           "Tu wpisz tytuł głosowania, które chcesz wyszukać"]
     return out
 
 def change_end_poll_date_fail_info():
@@ -192,7 +195,7 @@ def add_poll_info():
 
 def delete_poll_info():
     out = ["Czy chcesz usunąć poniższe głosowanie?", "Tytuł:", "Opis:", "Typ:", "Początek:", "Koniec:",
-           "Lista pytań z odpowiedziami dla głosowania:", "Brak odpowiedzi dla tego pytania", "Brak odpowiedzi dla tego pytania"]
+           "Lista pytań z odpowiedziami dla głosowania:", "Brak odpowiedzi dla tego pytania", "Brak pytań dla tego głosowania"]
     return out
 
 def user_search_info():
@@ -202,4 +205,33 @@ def user_search_info():
 def poll_menage_info():
     out = ["Edytujesz głosowanie:", "Tytuł:", "Opis:", "Typ:", "Początek:", "Koniec:",
            "Lista pytań z odpowiedziami dla głosowania:", "Brak odpowiedzi dla tego pytania", "Brak pytań dla tego głosowania"]
+    return out
+
+def poll_to_results_info():
+    out = ["Wybierz lub wyszukaj głosowanie którego wyniki chcesz zobaczyć:", "Lista głosowań których wyniki możesz zobaczyć:",
+           "Brak rekordów", "Tu wpisz tytuł głosowania, które chcesz wyszukać"]
+    return out
+
+def cancel_poll_info():
+    out = ["Czy chcesz unieważnić poniższe głosowanie?", "Tytuł:", "Opis:", "Typ:", "Początek:", "Koniec:",
+           "Lista pytań z odpowiedziami dla głosowania:", "Brak odpowiedzi dla tego pytania", "Brak odpowiedzi dla tego pytania"]
+    return out
+
+def poll_duration_time_fail_info():
+    out = "Błąd zmiany czasów ograniczających głosowanie. Głosowanie musi trwać minimum 5 minut."
+    return out
+
+def poll_start_datetime_error_info():
+    out = "Błąd zmiany daty początku głosowania. Głosowanie może się zacząć najwcześniej za 10 minut od aktualnego czasu."
+    return out
+
+def follow_users_for_answer_info():
+    out = ["Obserwujesz listę użytkowników, który głosowali na:", "w pytaniu:", "dla głosowania:", "Lista użytkowników:",
+           "Brak użytkowników"]
+    return out
+
+def poll_results_info():
+    out = ["Tytuł głosowania:", "Opis:", "Typ:", "Początek:", "Koniec:", "Liczba osób uprawnionych do głosowania:",
+           "Oddanych głosów:", "w tym głosów nieważnych:", "Lista pytań z odpowiedziami dla głosowania:",
+           "Brak odpowiedzi dla tego pytania", "Brak pytań dla tego głosowania"]
     return out

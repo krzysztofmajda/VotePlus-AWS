@@ -1,10 +1,10 @@
 from System_do_glosowan import app, fun, fun_mail
 from flask_mysqldb import MySQL
 
-app.config['MYSQL_HOST']='eu-cdbr-west-01.cleardb.com'
-app.config['MYSQL_USER']='b1146c15b19209'
-app.config['MYSQL_PASSWORD']=fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001')
-app.config['MYSQL_DB']='heroku_310c29efb085c8d'
+app.config['MYSQL_HOST']='eu-cdbr-west-01.cleardb.com' #'localhost'
+app.config['MYSQL_USER']='b1146c15b19209' #'root'
+app.config['MYSQL_PASSWORD']=fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
+app.config['MYSQL_DB']='heroku_310c29efb085c8d' #'voting'
 mysql=MySQL(app)
 
 def if_loging(login, password):
@@ -379,7 +379,7 @@ def get_polls_for_edit(uid, name=''):
 def polls_for_user_to_vote(pid):
     cur = mysql.connection.cursor()
     time = fun.generate_current_datetime()
-    cur.execute('SELECT poll.poll_id, poll.title, poll.end_datetime FROM poll INNER JOIN user_group ON poll.group_id=user_group.group_id WHERE user_group.user_id=(%s) AND user_group.if_voted=(%s) AND poll.start_datetime<=(%s) AND poll.end_datetime>=(%s)',(pid,'0',time,time))
+    cur.execute('SELECT poll.poll_id, poll.title, poll.end_datetime FROM poll INNER JOIN user_group ON poll.group_id=user_group.group_id WHERE user_group.user_id=(%s) AND user_group.if_voted!=(%s) AND poll.start_datetime<=(%s) AND poll.end_datetime>=(%s) AND poll.title NOT LIKE (%s)',(pid,'1',time,time,"%[UNIEWAŻNIONE]%"))
     polls = cur.fetchall()
     cur.close()
     return polls
@@ -514,13 +514,14 @@ def get_creator_username_and_email_for_poll(poll_id):
     cur.close()
     return creator
 
-def get_polls_for_delete(name=''):
+def get_polls_for_delete_or_cancel(name=''):
     cur = mysql.connection.cursor()
-    time = fun.generate_current_datetime()
+    time = fun.get_time_for_cancel_poll()
+    print(time)
     if name == '':
-        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND start_datetime>(%s)',(time,))
+        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s)',(time,))
     else:
-        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND start_datetime>(%s)',("%"+name+"%",time))
+        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s)',("%"+name+"%",time))
     polls = cur.fetchall()
     if polls is None:
         polls = []
@@ -558,6 +559,9 @@ def if_not_active_poll(poll_id):
         return False
 
 def delete_poll(poll_id):
+    creator = get_creator_username_and_email_for_poll(poll_id)
+    questions = get_all_question_with_answers_for_poll(poll_id)
+    info = get_poll_full_info(poll_id)
     con = mysql.connection
     con.autocommit = False
     cur = con.cursor()
@@ -567,7 +571,7 @@ def delete_poll(poll_id):
     cur.execute('DELETE FROM `poll` WHERE poll_id=(%s)',(poll_id,))
     con.commit()
     cur.close()
-    fun_mail.added_edited_deleted_poll(get_creator_username_and_email_for_poll(poll_id),"Usunięcie",get_all_question_with_answers_for_poll(poll_id),get_poll_full_info(poll_id))
+    fun_mail.added_edited_deleted_poll(creator,"Usunięcie",questions,info)
     return 0
 
 def voting(answers_id, poll_type, uid, poll_id):
@@ -654,6 +658,8 @@ def valid_votes(poll_id):
     cur.execute('SELECT SUM(`sum`) FROM `results` WHERE poll_id=(%s)',(poll_id,))
     cast = cur.fetchone()[0]
     cur.close()
+    if cast is None:
+        return 0
     return cast
 
 def vote_cast(poll_id):
@@ -668,6 +674,8 @@ def get_question_count(poll_id):
     cur.execute('SELECT COUNT(*) FROM `question` WHERE poll_id=(%s)',(poll_id,))
     count = cur.fetchone()[0]
     cur.close()
+    if count == 0:
+        return 1
     return count
 
 def get_authorized_users_for_vote_in_poll(poll_id):
@@ -676,3 +684,82 @@ def get_authorized_users_for_vote_in_poll(poll_id):
     cast = cur.fetchone()[0]
     cur.close()
     return cast
+
+def get_polls_for_results(pid, name=''):
+    cur = mysql.connection.cursor()
+    time = fun.generate_current_datetime()
+    if pid == 0:
+       if name == '':
+           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime<(%s)',(time,))
+       else:
+           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime<(%s)',("%"+name+"%",time))
+    else:
+        if name == '':
+            cur.execute('SELECT DISTINCT poll_id, title, start_datetime FROM poll INNER JOIN user_group ON user_group.group_id=poll.poll_id WHERE poll_id != 0 AND (user_id=(%s) OR creator=(%s)) AND end_datetime<(%s) AND (title NOT LIKE (%s) OR creator=(%s))',(pid,pid,time,"%[UNIEWAŻNIONE]%",pid))
+        else:
+            cur.execute('SELECT DISTINCT poll_id, title, start_datetime FROM poll INNER JOIN user_group ON user_group.group_id=poll.poll_id WHERE poll_id != 0 AND (user_id=(%s) OR creator=(%s)) AND title LIKE (%s) AND end_datetime<(%s) AND (title NOT LIKE (%s) OR creator=(%s))',(pid,pid,"%"+name+"%",time,"%[UNIEWAŻNIONE]%",pid))
+    polls = cur.fetchall()
+    if polls is None:
+        polls = []
+    cur.close()
+    return polls
+
+def cancel_poll(poll_id):
+    con = mysql.connection
+    con.autocommit = False
+    cur = con.cursor()
+    cur.execute('SELECT title FROM poll WHERE poll_id=(%s)',(poll_id,))
+    title = (cur.fetchone()[0] + " [UNIEWAŻNIONE]")
+    cur.execute('UPDATE `poll` SET `title`=(%s) WHERE poll_id=(%s)',(title,poll_id))
+    con.commit()
+    cur.close()
+    return 0
+
+def get_answers_for_results(question_id):
+    question_with_answers = []
+    cur = mysql.connection.cursor()
+
+    cur.execute('SELECT content FROM `question` WHERE question_id=(%s)',(question_id,))
+    question = cur.fetchone()
+    question_with_answers.append(question)
+
+    cur.execute('SELECT answers.answer_content, results.sum, answers.answers_id FROM `answers` INNER JOIN results ON answers.answers_id=results.answers_id WHERE answers.question_id=(%s);',(question_id,))
+    answers = cur.fetchall()
+    question_with_answers.append(answers)
+
+    cur.close()
+    return question_with_answers
+
+def get_poll_for_results(poll_id):
+    poll_questions_with_answers = []
+    cur = mysql.connection.cursor()
+
+    cur.execute('SELECT question_id FROM `question` WHERE poll_id=(%s)', (poll_id,))
+    questions = cur.fetchall()
+    cur.close()
+
+    for question in questions:
+        poll_questions_with_answers.append(get_answers_for_results(question[0]))
+
+    return poll_questions_with_answers
+
+def get_question_name_for_answer(answer_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT content FROM question INNER JOIN answers ON answers.question_id=question.question_id WHERE answers_id=(%s)',(answer_id,))
+    name = cur.fetchone()[0]
+    cur.close()
+    return name
+
+def get_poll_name_for_answer(answer_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT title FROM poll INNER JOIN results ON results.poll_id=poll.poll_id WHERE answers_id=(%s)',(answer_id,))
+    name = cur.fetchone()[0]
+    cur.close()
+    return name
+
+def get_users_for_result(result_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT name, surname, username FROM users INNER JOIN vote ON users.user_id=vote.user_id WHERE results_id=(%s)',(result_id,))
+    users = cur.fetchall()
+    cur.close()
+    return users

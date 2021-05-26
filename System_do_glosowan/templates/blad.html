@@ -28,7 +28,7 @@
             <a href="{{url_for('logowanie')}}"><input type="button" id="sign_in" value="Powrót"></a>
             {% elif site_type == 'aktywacja' %}
             <a href="{{url_for('logowanie')}}"><input type="button" id="sign_in" value="Zaloguj"></a>
-            {% elif site_type == 'zmiana_daty_końca' %}
+            {% elif site_type == 'zmiana_danych_głosowania' %}
             <a href="{{url_for('edytuj_dane_glosowania')}}"><input type="button" id="sign_in" value="Powrót"></a>
             {% elif site_type == 'oddanie_głosu' %}
             <a href="{{url_for('zalogowany')}}"><input type="button" id="sign_in" value="Moje konto"></a>
@@ -39,6 +39,8 @@
 </body>
 </html>
 <footer>
+    {% if site_type in ['rejestracja', 'logowanie', 'aktywacja'] or change_type == 'reset' %}
     <a href="{{ url_for('strona_startowa') }}"><input type="button" id="main_page" value="Strona główna"></a>
+    {% endif %}
     <p>VotePlus &copy; 2021</p>
 </footer>

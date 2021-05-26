@@ -63,10 +63,15 @@
                 </ul>
             </div>
             <form method="post">
-            <div id="buttons">
-                <a href="{{url_for('anulowanie_usuniecia_glosowania')}}"><input type="button" class="exit" name="exit" value="Anuluj"></a>
-                <input type="submit" class="delete" name="delete" value="Usuń">
-            </div>
+                <div id="buttons">
+                    {% if site_type == 'Usunięcie' %}
+                    <a href="{{url_for('anulowanie_usuniecia_glosowania')}}"><input type="button" class="exit" name="exit" value="Anuluj"></a>
+                    <input type="submit" class="delete" name="delete" value="Usuń">
+                    {% else %}
+                    <a href="{{url_for('anulowanie_uniewaznienia_glosowania')}}"><input type="button" class="exit" name="exit" value="Anuluj"></a>
+                    <input type="submit" class="delete" name="cancel" value="Unieważnij">
+                    {% endif %}
+                </div>
             </form>
         </div>
         <div id="footer">
