@@ -11,6 +11,7 @@ from matplotlib.figure import Figure
 import csv
 import codecs
 import pdfkit
+import matplotlib.image as image 
 
 def hashing(password):
     hash = hashlib.sha512(password.encode()).hexdigest()
@@ -55,6 +56,13 @@ def inactivate_user_to_remove(users):
             to_remove.append(user)
     return to_remove
 
+def get_time_for_edit_poll():
+    date = datetime.strptime(generate_current_datetime(), "%Y-%m-%d %H:%M:%S") + timedelta(minutes=2)
+    return date.strftime('%Y-%m-%d %H:%M:%S')
+
+def get_datetime_for_str(str_datetime):
+    return datetime.strptime(str_datetime, "%Y-%m-%d %H:%M:%S")
+
 def get_time_for_cancel_poll():
     zone = pytz.timezone('Europe/Warsaw')
     date_time = datetime.now(zone) - timedelta(weeks=2)
@@ -95,7 +103,7 @@ def if_date_and_time_before_datetime(date, time, date_time):
 def if_poll_duration_wrong(start_datetime, end_datetime):
     start_date_and_time = datetime.strptime((start_datetime), "%Y-%m-%d %H:%M:%S")
     end_date_and_time = datetime.strptime((end_datetime), "%Y-%m-%d %H:%M:%S")
-    if start_date_and_time < end_date_and_time+timedelta(minutes=5):
+    if start_date_and_time > end_date_and_time-timedelta(minutes=5):
         return True
     return False
 
@@ -138,23 +146,52 @@ def gen_plots(questions):
         images.append(pngimstr)
     return images
 
-def generate_csv(result):
+def generate_csv(result, users, log_user, poll):
     output = io.StringIO()
     writer = csv.writer(output)
-    line=["Pytania;Odpowiedzi;Liczba głosów"]
+    line=["Pytanie;Odpowiedź;Liczba głosów"]
     writer.writerow(line)
     for row in result:
         question = row[0][0]
         answers = row[1]
-        line=[question+";; "]
-        writer.writerow(line)
         for answer in answers:
-            line = [";"+answer[0]+";"+str(answer[1])]
+            line = [question+";"+answer[0]+";"+str(answer[1])]
             writer.writerow(line)
+    if log_user == 0 or log_user == poll[5]:
+        if poll[1] == 'Jawne':
+            users = users[0]
+        line = [""]
+        writer.writerow(line)
+        line = [""]
+        writer.writerow(line)
+        line = ["Imię;Nazwisko;Czy na liście obecności?"]
+        writer.writerow(line)
+        for user in users:
+            if user[2] == '1' and not user[0] is None:
+                line = [user[0]+";"+user[1]+";Tak"]
+            elif user[2] == '1':
+                line = ["NN;NN;Tak"]
+            elif user[0] is None:
+                line = ["NN;NN;Nie"]
+            else:
+                line = [user[0]+";"+user[1]+";Nie"]
+            writer.writerow(line)
+
     return codecs.BOM_UTF8.decode("utf8") + codecs.BOM_UTF8.decode() + output.getvalue()
 
 def generate_pdf(html):
-    path_wkhtmltopdf = './bin/wkhtmltopdf'
+    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' #'./bin/wkhtmltopdf' #r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
     pdf = pdfkit.from_string(html, False, configuration=config)
     return pdf
+
+def logo_for_pdf():  
+    im = image.imread('System_do_glosowan\static\images\logo.png')
+    fig = Figure()
+    fig.figimage(im, resize=(135,150))
+        
+    pngim = io.BytesIO()
+    FigCan(fig).print_png(pngim)
+    pngimstr = "data:image/png;base64,"
+    pngimstr += base64.b64encode(pngim.getvalue()).decode('utf8')
+    return pngimstr

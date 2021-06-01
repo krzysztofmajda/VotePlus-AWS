@@ -15,12 +15,29 @@ def strona_startowa():
         loged_in = True
     else:
         loged_in = False
+    session.pop('reg_error_id', None)
+    session.pop('reg_success', None)
+    session.pop('log_error', None)
+    session.pop('forgot_code_id', None)
+    session.pop('forgot_user_id', None)
+    session.pop('activate_user_id', None)
+    session.pop('activate_fail', None)
+    session.pop('pass_change_fail', None)
+    session.pop('pass_change_fail_type', None)
     return render_template('strona_startowa.html', info=message.main_page_info(), loged_in=loged_in)
 
 @app.route('/logowanie', methods=['GET','POST'])
 def logowanie():
     if 'log_in_user_id' in session or 'active_user_id' in session:
         return redirect('/zalogowany')
+    session.pop('log_error', None)
+    session.pop('reg_success', None)
+    session.pop('forgot_code_id', None)
+    session.pop('forgot_user_id', None)
+    session.pop('activate_user_id', None)
+    session.pop('activate_fail', None)
+    session.pop('pass_change_fail', None)
+    session.pop('pass_change_fail_type', None)
     session['logging'] = 'begin'
     if request.method == 'POST':
         login = request.form.get('username')
@@ -39,7 +56,7 @@ def logowanie():
             return redirect('/blad_logowania')
     return render_template('logowanie.html', info=message.loging_info())
 
-@app.route('/blad_logowania')
+@app.route('/blad_logowania', methods=['GET','POST'])
 def blad_logowania():
     if not 'log_error' in session:
         return redirect('/logowanie')
@@ -49,6 +66,7 @@ def blad_logowania():
 def rejestracja():
     if 'log_in_user_id' in session or 'active_user_id' in session:
         return redirect('/zalogowany')
+    session.pop('reg_error_id', None)
     if request.method == 'POST':
         username = request.form.get('username')
         name = request.form.get('user_name')
@@ -71,7 +89,6 @@ def blad_rejestracji():
     if not 'reg_error_id' in session:
         return redirect('/rejestracja')
     info = message.register_fail_info(session['reg_error_id'])
-    session.pop('reg_error_id', None)
     return render_template('blad.html', info=info, site_type='rejestracja')
 
 @app.route('/udana_rejestracja', methods=['GET','POST'])
@@ -118,8 +135,6 @@ def reset_hasla():
 def koniec_resetu_hasla():
     if not 'forgot_code_id' in session:
         return redirect('/logowanie')
-    session.pop('forgot_code_id', None)
-    session.pop('forgot_user_id', None)
     return render_template('koniec_resetu_hasla.html', info=message.after_reset_password_info())
 
 @app.route('/anulowanie_resetu_hasla', methods=['GET','POST'])
@@ -134,6 +149,13 @@ def zalogowany():
         return redirect('/aktywacja_konta')
     if not 'log_in_user_id' in session:
         return redirect('/logowanie')
+    session.pop('activate_user_id', None)
+    session.pop('activate_success', None)
+    session.pop('pass_change_success', None)
+    session.pop('pass_change_fail', None)
+    session.pop('pass_change_fail_type', None)
+    session.pop('vote_poll_id', None)
+    session.pop('voting_fail', None)
     if 'vote_poll_id' in session:
         return redirect('/opuszczenie_glosowania')
     if request.method == "POST":
@@ -171,22 +193,20 @@ def udana_aktywacja():
     if not 'activate_success' in session:
         return redirect('/zalogowany')
     session['log_in_user_id'] = session['activate_user_id']
-    session.pop('activate_user_id', None)
-    session.pop('activate_success', None)
     return render_template('potwierdzenie.html', info=message.activate_user_success_info(), site_type='aktywacja')
 
 @app.route('/blad_aktywacji_konta', methods=['GET','POST'])
 def blad_aktywacji_konta():
     if not 'activate_fail' in session:
         return redirect('/zalogowany')
-    session.pop('activate_user_id', None)
-    session.pop('activate_fail', None)
     return render_template('blad.html', info=message.activate_user_fail_info(), site_type='aktywacja')
 
 @app.route('/wyloguj', methods=['GET','POST'])
 def wyloguj():
     session.pop('log_in_user_id', None)
     session.pop('activate_user_id', None)
+    session.pop('log_in_admin', None)
+    session.pop('log_in_editor', None)
     return redirect('/strona_startowa')
 
 @app.route('/zmien_haslo', methods=['GET','POST'])
@@ -214,7 +234,6 @@ def zmien_haslo():
 def poprawna_zmiana_hasla():
     if not 'pass_change_success' in session:
         return redirect('/zmien_haslo')
-    session.pop('pass_change_success', None)
     return render_template('potwierdzenie.html', info=message.change_password_success_info(), site_type='zmien_haslo')
 
 @app.route('/blad_zmiany_hasla', methods=['GET','POST'])
@@ -223,8 +242,6 @@ def blad_zmiany_hasla():
         return redirect('/zmien_haslo')
     info = message.change_password_fail_info(session['pass_change_fail'])
     change_type = session['pass_change_fail_type']
-    session.pop('pass_change_fail', None)
-    session.pop('pass_change_fail_type', None)
     return render_template('blad.html', info=info, site_type='zmien_haslo', change_type=change_type)
 
 @app.route('/wybierz_uzytkownika', methods=['GET','POST'])
@@ -343,6 +360,7 @@ def utworz_glosowanie():
 def zarzadzaj_glosowaniem():
     if not 'edit_poll_id' in session:
         return redirect('/glosowanie_do_edycji')
+    session.pop('edit_poll_error', None)
     if request.method == "POST":
         if 'edit_question_id' in request.form:
             session['edit_question_id'] = request.form.get('edit_question_id')
@@ -367,23 +385,49 @@ def zarzadzaj_glosowaniem():
 
 @app.route('/zakonczenie_edycji_glosowania', methods=['GET','POST'])
 def zakonczenie_edycji_glosowania():
+    questions = fun_base.get_all_question_with_answers_for_poll(session['edit_poll_id'])
+    added_users=fun_base.added_user_to_poll(session['edit_poll_id'])
+    if questions == []:
+        session['edit_poll_error'] = "No questions"
+        return redirect('/blad_edycji_glosowania')
+    else:
+        for question in questions:
+            if len(question[1]) < 2:
+                session['edit_poll_error'] = "Too less answers"
+                return redirect('/blad_edycji_glosowania')
+    if len(added_users) < 2:
+        session['edit_poll_error'] = "Too less users"
+        return redirect('/blad_edycji_glosowania')
     if 'added_poll' in session:
         if session['log_in_user_id'] != 0:
-            fun_mail.added_edited_deleted_poll(fun_base.get_creator_username_and_email_for_poll(session['edit_poll_id']), session['edit_type'],fun_base.get_all_question_with_answers_for_poll(session['edit_poll_id']), fun_base.get_poll_full_info(session['edit_poll_id']))
+            fun_mail.added_edited_deleted_poll(fun_base.get_creator_username_and_email_for_poll(session['edit_poll_id']), session['edit_type'], questions, fun_base.get_poll_full_info(session['edit_poll_id']))
         session.pop('added_poll', None)
         session.pop('edited_poll', None)
     elif 'edited_poll' in session:
         if session['log_in_user_id'] != 0:
-            fun_mail.added_edited_deleted_poll(fun_base.get_creator_username_and_email_for_poll(session['edit_poll_id']), session['edit_type'],fun_base.get_all_question_with_answers_for_poll(session['edit_poll_id']), fun_base.get_poll_full_info(session['edit_poll_id']))
+            fun_mail.added_edited_deleted_poll(fun_base.get_creator_username_and_email_for_poll(session['edit_poll_id']), session['edit_type'], questions, fun_base.get_poll_full_info(session['edit_poll_id']))
         session.pop('edited_poll', None)
     session.pop('edit_type', None)
     session.pop('edit_poll_id', None)
     return redirect('/zalogowany')
 
+@app.route('/blad_edycji_glosowania', methods=['GET','POST'])
+def blad_edycji_glosowania():
+    if not 'edit_poll_error' in session:
+        return redirect('/zalogowany')
+    info = message.edit_poll_error_info(session['edit_poll_error'])
+    if session['edit_poll_error'] != "Too less users":
+        error_type = "pytania_odpowiedzi"
+    else:
+        error_type = "uczestnicy"
+    return render_template('blad.html', info=info, site_type='edycja_głosowania', error_type=error_type)
+
 @app.route('/zarzadzaj_uczestnikami', methods=['GET','POST'])
 def zarzadzaj_uczestnikami():
     if not 'edit_poll_id' in session:
         return redirect('/zarzadzaj_glosowaniem')
+    session.pop('edit_poll_error', None)
+    session.pop('copy_count', None)
     if request.method == "POST":
         if 'edit_pid' in request.form:
             add_pid_for_poll = request.form.get('edit_pid')
@@ -433,9 +477,7 @@ def kopiuj_grupe():
 def potwierdzenie_kopiowania_grupy():
      if not 'copy_count' in session:
         return redirect('/zarzadzaj_uczestnikami')
-     info = message.copy_users_info(session['copy_count'])
-     session.pop('copy_count', None)
-     return render_template('potwierdzenie.html', info=info, site_type='kopiowanie_grupy')
+     return render_template('potwierdzenie.html', info=message.copy_users_info(session['copy_count']), site_type='kopiowanie_grupy')
 
 @app.route('/anuluj_kopiowanie_grupy', methods=['GET','POST'])
 def anuluj_kopiowanie_grupy():
@@ -514,6 +556,9 @@ def edytuj_odpowiedz():
 def edytuj_dane_glosowania():
     if not 'edit_poll_id' in session:
         return redirect('/zarzadzaj_glosowaniem')
+    session.pop('end_time_error', None)
+    session.pop('poll_duration_error', None)
+    session.pop('poll_start_time_error', None)
     data = fun_base.get_poll_full_info(session['edit_poll_id'])
     if_not_active = fun_base.if_not_active_poll(session['edit_poll_id'])
     if request.method == "POST":
@@ -558,7 +603,7 @@ def edytuj_dane_glosowania():
                 return redirect('/blad_zmiany_daty_konca_glosowania')
         start = fun.str_date_and_time(start_date, start_time)
         end = fun.str_date_and_time(end_date, end_time)
-        if fun.if_start_time_before_datetime(start) and start != data[3]:
+        if fun.if_start_time_before_datetime(start) and fun.get_datetime_for_str(start) != data[3]:
             session['poll_start_time_error'] = "Error"
             return redirect('/blad_czasu_rozpoczecia_glosowania')
         elif fun.if_poll_duration_wrong(start, end):
@@ -573,21 +618,18 @@ def edytuj_dane_glosowania():
 def blad_zmiany_daty_konca_glosowania():
     if not 'end_time_error' in session:
         return redirect('/zarzadzaj_glosowaniem')
-    session.pop('end_time_error', None)
     return render_template('blad.html', site_type="zmiana_danych_głosowania", info=message.change_end_poll_date_fail_info())
 
-@app.route('/blad_czasu_trwania_glosowania')
+@app.route('/blad_czasu_trwania_glosowania', methods=['GET','POST'])
 def blad_czasu_trwania_glosowania():
     if not 'poll_duration_error' in session:
         return redirect('/zarzadzaj_glosowaniem')
-    session.pop('poll_duration_error', None)
     return render_template('blad.html', site_type="zmiana_danych_głosowania", info=message.poll_duration_time_fail_info())
 
-@app.route('/blad_czasu_rozpoczecia_glosowania')
+@app.route('/blad_czasu_rozpoczecia_glosowania', methods=['GET','POST'])
 def blad_czasu_rozpoczecia_glosowania():
     if not 'poll_start_time_error' in session:
         return redirect('/zarzadzaj_glosowaniem')
-    session.pop('poll_start_time_error', None)
     return render_template('blad.html', site_type="zmiana_danych_głosowania", info=message.poll_start_datetime_error_info())
 
 @app.route('/usun_pytanie', methods=['GET','POST'])
@@ -721,8 +763,6 @@ def glosuj():
 def blad_oddania_glosu():
     if not 'voting_fail' in session:
         return redirect('/zalogowany')
-    session.pop('vote_poll_id', None)
-    session.pop('voting_fail', None)
     return render_template('blad.html', site_type="oddanie_głosu", info=message.voting_fail_info())
 
 @app.route('/anulowanie_oddania_glosu', methods=['GET','POST'])
@@ -819,8 +859,9 @@ def zakoncz_obserwowanie_uczestnikow():
 @app.route('/csv', methods=['GET','POST'])
 def csv():
     questions = fun_base.get_poll_for_results(session['results_poll_id'])
-    output = make_response(fun.generate_csv(questions))
-    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    users=fun_base.get_voters(session['results_poll_id'])
+    output = make_response(fun.generate_csv(questions, users, session['log_in_user_id'], fun_base.get_poll_full_info(session['results_poll_id'])))
+    output.headers["Content-Disposition"] = ("attachment; filename=raport "+fun.generate_current_datetime()+".csv")
     output.headers["Content-type"] = "text/csv"
     return output
 
@@ -831,15 +872,13 @@ def pdf():
     invalid = fun_base.vote_cast(session['results_poll_id']) - fun_base.valid_votes(session['results_poll_id'])/fun_base.get_question_count(session['results_poll_id'])
     authorized = fun_base.get_authorized_users_for_vote_in_poll(session['results_poll_id'])
     html = render_template("pdf.html", data=fun_base.get_poll_full_info(session['results_poll_id']), questions=questions,
-                           images=fun.gen_plots(questions), cast=cast, invalid=invalid, authorized=authorized)
-    response=make_response(fun.generate_pdf(html))
-    response.headers["Content-Type"]="application/pdf"
-    response.headers["Content-Disposition"]="attachment; filename=export.pdf"
+                           images=fun.gen_plots(questions), cast=cast, invalid=invalid, authorized=authorized,
+                           logo=fun.logo_for_pdf(), users=fun_base.get_voters(session['results_poll_id']),
+                           log_user=session['log_in_user_id'])
+    response = make_response(fun.generate_pdf(html))
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = ("attachment; filename=raport "+fun.generate_current_datetime()+".pdf")
     return response
-
-@app.route('/tmp', methods=['GET','POST'])
-def tmp():
-    return "tmp"
 
 #przekierowanie, gdy adres URL nie istnieje
 @app.errorhandler(404)

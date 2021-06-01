@@ -1,10 +1,10 @@
 from System_do_glosowan import app, fun, fun_mail
 from flask_mysqldb import MySQL
 
-app.config['MYSQL_HOST']='eu-cdbr-west-01.cleardb.com' #'localhost'
-app.config['MYSQL_USER']='b1146c15b19209' #'root'
-app.config['MYSQL_PASSWORD']=fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
-app.config['MYSQL_DB']='heroku_310c29efb085c8d' #'voting'
+app.config['MYSQL_HOST']='localhost' #'eu-cdbr-west-01.cleardb.com' #'localhost'
+app.config['MYSQL_USER']='root' #'b1146c15b19209' #'root'
+app.config['MYSQL_PASSWORD']='' #fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
+app.config['MYSQL_DB']='voting' #'heroku_310c29efb085c8d' #'voting'
 mysql=MySQL(app)
 
 def if_loging(login, password):
@@ -131,9 +131,9 @@ def if_password(uid, password):
 def get_email_and_username_for_edit_user(data=''):
     cur = mysql.connection.cursor()
     if data != '':
-        cur.execute('SELECT user_id, `e-mail`, username FROM users WHERE (`e-mail` = (%s) OR username = (%s)) AND user_id NOT IN (SELECT user_id FROM inactive_user)',(data,data))
+        cur.execute('SELECT user_id, `e-mail`, username FROM users WHERE (`e-mail` = (%s) OR username = (%s)) AND user_id AND name != \'NULL\' NOT IN (SELECT user_id FROM inactive_user)',(data,data))
     else:
-        cur.execute('SELECT user_id, `e-mail`, username FROM users WHERE user_id != 0 AND user_id NOT IN (SELECT user_id FROM inactive_user)')
+        cur.execute('SELECT user_id, `e-mail`, username FROM users WHERE user_id != 0 AND name != \'NULL\' AND user_id NOT IN (SELECT user_id FROM inactive_user)')
     details = cur.fetchall()
     if details is None:
         details = []
@@ -182,11 +182,9 @@ def delete_user(uid):
     data = cur.fetchone()
 
     cur.execute('DELETE FROM user_role WHERE user_id = (%s)',(uid,))
-    cur.execute('UPDATE user_group SET user_id=NULL WHERE user_id = (%s)',(uid,))
-    cur.execute('DELETE FROM vote WHERE user_id = (%s)',(uid,))
     cur.execute('DELETE FROM password WHERE user_id = (%s)',(uid,))
     cur.execute('UPDATE poll SET creator=NULL WHERE creator = (%s)',(uid,))
-    cur.execute('DELETE FROM users WHERE user_id = (%s)',(uid,))
+    cur.execute('UPDATE users SET name=NULL, surname=NULL, username=NULL, `e-mail`=NULL WHERE user_id = (%s)',(uid,))
     con.commit()
     cur.close()
     fun_mail.delete_user(data[0],data[1],data[2],data[3],data[4],data[5])
@@ -266,10 +264,7 @@ def create_poll(title, description, poll_type, start, end, creator):
     cur.execute('SELECT MAX(group_id) FROM `group`')
     id_max = cur.fetchone()[0]+1
 
-    group_name = ("Grupa dla głosowania: " + title)
-    cur.execute('SELECT COUNT(*) FROM `group` WHERE name LIKE (%s)',(("%"+group_name+"%"),))
-    name_count = cur.fetchone()[0]
-    group_name = (group_name + " " + str(name_count))
+    group_name = ("Grupa dla głosowania: " + title + " " + start)
 
     cur.execute('INSERT INTO `group`(group_id, name) VALUES(%s, %s)', (id_max, group_name))
     cur.execute('INSERT INTO poll(poll_id, title, type, description, group_id, start_datetime, end_datetime, creator) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)',(id_max, title, poll_type, description, id_max, start, end, creator))
@@ -281,9 +276,9 @@ def create_poll(title, description, poll_type, start, end, creator):
 def get_full_name_for_add_to_poll(data=''):
     cur = mysql.connection.cursor()
     if data != '':
-        cur.execute('SELECT user_id, name, surname, username FROM users WHERE username = (%s) AND user_id NOT IN (SELECT user_id FROM inactive_user)',(data,))
+        cur.execute('SELECT user_id, name, surname, username FROM users WHERE username = (%s) AND name != \'NULL\' AND user_id NOT IN (SELECT user_id FROM inactive_user)',(data,))
     else:
-        cur.execute('SELECT user_id, name, surname, username FROM users WHERE user_id != 0 AND user_id NOT IN (SELECT user_id FROM inactive_user)')
+        cur.execute('SELECT user_id, name, surname, username FROM users WHERE user_id != 0 AND name != \'NULL\' AND user_id NOT IN (SELECT user_id FROM inactive_user)')
     full_name = cur.fetchall()
     if full_name is None:
         full_name = []
@@ -341,7 +336,7 @@ def get_group_for_select(current_group, name=''):
 
 def get_users_full_name_from_group(group_id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT users.name, users.surname, users.username FROM users INNER JOIN user_group ON user_group.user_id=users.user_id WHERE user_group.group_id=(%s)',(group_id,))
+    cur.execute('SELECT users.name, users.surname, users.username FROM users INNER JOIN user_group ON user_group.user_id=users.user_id WHERE user_group.group_id=(%s) AND users.name != \'NULL\'',(group_id,))
     users = cur.fetchall()
     cur.close()
     if users is None:
@@ -364,14 +359,14 @@ def get_polls_for_edit(uid, name=''):
     time = fun.generate_current_datetime()
     if uid == 0:
         if name == '':
-            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s)',(time,))
+            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s) ORDER BY start_datetime DESC',(time,))
         else:
-            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s)',("%"+name+"%",time))
+            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s) ORDER BY start_datetime DESC',("%"+name+"%",time))
     else:
         if name == '':
-            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND creator=(%s) AND end_datetime>(%s)',(uid,time))
+            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND creator=(%s) AND end_datetime>(%s) ORDER BY start_datetime DESC',(uid,time))
         else:
-            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND creator=(%s) AND title LIKE (%s) AND end_datetime>(%s)',(uid,"%"+name+"%",time))
+            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND creator=(%s) AND title LIKE (%s) AND end_datetime>(%s) ORDER BY start_datetime DESC',(uid,"%"+name+"%",time))
     polls = cur.fetchall()
     if polls is None:
         polls = []
@@ -381,7 +376,7 @@ def get_polls_for_edit(uid, name=''):
 def polls_for_user_to_vote(pid):
     cur = mysql.connection.cursor()
     time = fun.generate_current_datetime()
-    cur.execute('SELECT poll.poll_id, poll.title, poll.end_datetime FROM poll INNER JOIN user_group ON poll.group_id=user_group.group_id WHERE user_group.user_id=(%s) AND user_group.if_voted!=(%s) AND poll.start_datetime<=(%s) AND poll.end_datetime>=(%s) AND poll.title NOT LIKE (%s)',(pid,'1',time,time,"%[UNIEWAŻNIONE]%"))
+    cur.execute('SELECT poll.poll_id, poll.title, poll.end_datetime FROM poll INNER JOIN user_group ON poll.group_id=user_group.group_id WHERE user_group.user_id=(%s) AND user_group.if_voted!=(%s) AND poll.start_datetime<=(%s) AND poll.end_datetime>=(%s) AND poll.title NOT LIKE (%s) ORDER BY end_datetime ASC',(pid,'1',time,time,"%[UNIEWAŻNIONE]%"))
     polls = cur.fetchall()
     cur.close()
     return polls
@@ -453,6 +448,8 @@ def get_all_answers_for_question(question_id):
 
     cur.execute('SELECT answers_id,answer_content FROM `answers` WHERE question_id=(%s)',(question_id,))
     answers = cur.fetchall()
+    if answers is None:
+        answers = []
     question_with_answers.append(answers)
 
     cur.close()
@@ -474,7 +471,7 @@ def get_all_question_with_answers_for_poll(poll_id):
 def get_poll_full_info(poll_id):
     poll_questions_with_answers = []
     cur = mysql.connection.cursor()
-    cur.execute('SELECT `title`,`type`,`description`,`start_datetime`,`end_datetime` FROM poll WHERE poll_id=(%s)',(poll_id,))
+    cur.execute('SELECT `title`,`type`,`description`,`start_datetime`,`end_datetime`, `creator` FROM poll WHERE poll_id=(%s)',(poll_id,))
     info = cur.fetchone()
     return info
 
@@ -521,9 +518,9 @@ def get_polls_for_delete_or_cancel(name=''):
     time = fun.get_time_for_cancel_poll()
     print(time)
     if name == '':
-        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s)',(time,))
+        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s) ORDER BY end_datetime DESC',(time,))
     else:
-        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s)',("%"+name+"%",time))
+        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s) ORDER BY end_datetime DESC',("%"+name+"%",time))
     polls = cur.fetchall()
     if polls is None:
         polls = []
@@ -535,14 +532,14 @@ def get_polls_for_tracking(pid, name=''):
     time = fun.generate_current_datetime()
     if pid == 0:
        if name == '':
-           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s) AND start_datetime<(%s)',(time,time))
+           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s) AND start_datetime<(%s) ORDER BY end_datetime DESC',(time,time))
        else:
-           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s) AND start_datetime<(%s)',("%"+name+"%",time,time))
+           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s) AND start_datetime<(%s) ORDER BY end_datetime DESC',("%"+name+"%",time,time))
     else:
         if name == '':
-            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND creator=(%s) AND start_datetime<(%s) AND end_datetime>(%s)',(pid,time, time))
+            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND creator=(%s) AND start_datetime<(%s) AND end_datetime>(%s) ORDER BY end_datetime DESC',(pid,time, time))
         else:
-            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND creator=(%s) AND title LIKE (%s) AND start_datetime<(%s) AND end_datetime>(%s)',(pid,"%"+name+"%",time, time))
+            cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND creator=(%s) AND title LIKE (%s) AND start_datetime<(%s) AND end_datetime>(%s) ORDER BY end_datetime DESC',(pid,"%"+name+"%",time, time))
     polls = cur.fetchall()
     if polls is None:
         polls = []
@@ -550,7 +547,7 @@ def get_polls_for_tracking(pid, name=''):
     return polls
 
 def if_not_active_poll(poll_id):
-    date_time = fun.generate_current_datetime()
+    date_time = fun.get_time_for_edit_poll()
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM poll WHERE start_datetime <= (%s) AND end_datetime >= (%s) AND poll_id=(%s)',(date_time,date_time,poll_id))
     active_poll = cur.fetchone()
@@ -692,14 +689,14 @@ def get_polls_for_results(pid, name=''):
     time = fun.generate_current_datetime()
     if pid == 0:
        if name == '':
-           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime<(%s)',(time,))
+           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime<(%s) ORDER BY end_datetime DESC',(time,))
        else:
-           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime<(%s)',("%"+name+"%",time))
+           cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime<(%s) ORDER BY end_datetime DESC',("%"+name+"%",time))
     else:
         if name == '':
-            cur.execute('SELECT DISTINCT poll_id, title, start_datetime FROM poll INNER JOIN user_group ON user_group.group_id=poll.poll_id WHERE poll_id != 0 AND (user_id=(%s) OR creator=(%s)) AND end_datetime<(%s) AND (title NOT LIKE (%s) OR creator=(%s))',(pid,pid,time,"%[UNIEWAŻNIONE]%",pid))
+            cur.execute('SELECT DISTINCT poll_id, title, start_datetime FROM poll INNER JOIN user_group ON user_group.group_id=poll.poll_id WHERE poll_id != 0 AND (user_id=(%s) OR creator=(%s)) AND end_datetime<(%s) AND (title NOT LIKE (%s) OR creator=(%s)) ORDER BY end_datetime DESC',(pid,pid,time,"%[UNIEWAŻNIONE]%",pid))
         else:
-            cur.execute('SELECT DISTINCT poll_id, title, start_datetime FROM poll INNER JOIN user_group ON user_group.group_id=poll.poll_id WHERE poll_id != 0 AND (user_id=(%s) OR creator=(%s)) AND title LIKE (%s) AND end_datetime<(%s) AND (title NOT LIKE (%s) OR creator=(%s))',(pid,pid,"%"+name+"%",time,"%[UNIEWAŻNIONE]%",pid))
+            cur.execute('SELECT DISTINCT poll_id, title, start_datetime FROM poll INNER JOIN user_group ON user_group.group_id=poll.poll_id WHERE poll_id != 0 AND (user_id=(%s) OR creator=(%s)) AND title LIKE (%s) AND end_datetime<(%s) AND (title NOT LIKE (%s) OR creator=(%s)) ORDER BY end_datetime DESC',(pid,pid,"%"+name+"%",time,"%[UNIEWAŻNIONE]%",pid))
     polls = cur.fetchall()
     if polls is None:
         polls = []
@@ -762,6 +759,30 @@ def get_poll_name_for_answer(answer_id):
 def get_users_for_result(result_id):
     cur = mysql.connection.cursor()
     cur.execute('SELECT name, surname, username FROM users INNER JOIN vote ON users.user_id=vote.user_id WHERE results_id=(%s)',(result_id,))
+    users = cur.fetchall()
+    cur.close()
+    return users
+
+def get_voters(poll_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT type FROM poll WHERE poll_id=(%s)',(poll_id,))
+    poll_type = cur.fetchone()[0]
+
+    if poll_type == 'Jawne':
+        all_users = []
+        cur.execute('SELECT question_id FROM question WHERE poll_id=(%s)',(poll_id))
+        questions = cur.fetchall()
+        for question in questions:
+            all_users.append(get_voters_for_question(question, poll_id))
+    else:
+        cur.execute('SELECT users.name, users.surname, user_group.if_voted FROM users RIGHT JOIN user_group ON users.user_id=user_group.user_id WHERE group_id=(%s)',(poll_id,))
+        all_users = cur.fetchall()
+    cur.close()
+    return all_users
+
+def get_voters_for_question(question_id, poll_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT users.name, users.surname, user_group.if_voted, a.answer_content FROM (SELECT users.user_id, answers.answer_content FROM users JOIN vote ON users.user_id=vote.user_id JOIN answers ON answers.answers_id=vote.results_id WHERE answers.question_id=(%s)) as a RIGHT JOIN user_group ON user_group.user_id=a.user_id LEFT JOIN users ON user_group.user_id=users.user_id WHERE user_group.group_id=(%s)',(question_id,poll_id))
     users = cur.fetchall()
     cur.close()
     return users

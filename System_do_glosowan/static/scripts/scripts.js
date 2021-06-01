@@ -1,8 +1,8 @@
-var lata = document.getElementById('lata');
+let lata = document.getElementById('lata');
 if (typeof (lata) != 'undefined' && lata != null) {
-    var podaj = "Podaj datę urodzenia";
-    var x = "", i;
-    var data = new Date();
+    let podaj = "Podaj datę urodzenia";
+    let x = "", i;
+    let data = new Date();
     x = x + "<select id=\"user_year\" name=\"user_year\" class=\"formField\">";
     x = x + "<option selected></option>"
     for (i = 1901; i <= data.getFullYear(); i++) {
@@ -15,6 +15,9 @@ if (typeof (lata) != 'undefined' && lata != null) {
 function checkPassword(registerForm) {
     password1 = registerForm.new_password.value;
     password2 = registerForm.new_password_repeat.value;
+    imie = registerForm.user_name.value;
+    nazwisko = registerForm.user_surname.value;
+    mail = registerForm.user_email.value;
 
     if (password1 != password2) {
         alert("\nPodane hasła nie są identyczne!")
@@ -26,11 +29,31 @@ function checkPassword(registerForm) {
         alert("\nPodaj rok urodzenia!")
         return false;
     }
+
+    if (typeof (imie) != 'undefined' && imie != null) {
+        if (/[^a-zA-Z]/.test(imie)) {
+            alert('Nieprawidłowe znaki w polu Imię')
+            return false;
+        }
+    }
+
+    if (typeof (nazwisko) != 'undefined' && nazwisko != null) {
+        if (/[^a-zA-Z]/.test(nazwisko)) {
+            alert('Nieprawidłowe znaki w polu Nazwisko')
+            return false;
+        }
+    }
+    if (typeof (nazwisko) != 'undefined' && nazwisko != null) {
+        if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
+            alert("Nieprawidłowy adres email!")
+            return (false)
+        }
+    }
 }
 
-var calculateComplexity = function (password) {
-    var complexity = 0;
-    var regExps = [
+let calculateComplexity = function (password) {
+    let complexity = 0;
+    let regExps = [
         /[a-z]/,
         /[A-Z]/,
         /[0-9]/,
@@ -48,14 +71,14 @@ var calculateComplexity = function (password) {
     };
 };
 
-var checkPasswordStregth = function (password) {
-    var progress = document.querySelector('#passwordComplexity'),
+let checkPasswordStregth = function (password) {
+    let progress = document.querySelector('#passwordComplexity'),
         complexity = calculateComplexity(this.value);
     progress.value = complexity.value;
     progress.max = complexity.max;
 };
 
-var input = document.querySelector('#new_password');
+let input = document.querySelector('#new_password');
 if (typeof (input) != 'undefined' && input != null)
     input.addEventListener('keyup', checkPasswordStregth);
 

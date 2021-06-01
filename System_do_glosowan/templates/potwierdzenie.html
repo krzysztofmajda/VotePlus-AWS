@@ -13,7 +13,11 @@
 <form method="post">
     <div id="panel">
         <div id="message">
+            {% if site_type == 'kopiowanie_grupy' %}
+            <label>{{info[0]}}<br>{{info[1]}}</label>
+            {% else %}
             <label>{{info}}</label>
+            {% endif %}
         </div>
         <div id="lower">
             {% if site_type == 'rejestracja' %}
@@ -31,6 +35,8 @@
 </body>
 </html>
 <footer>
+    {% if site_type == 'rejestracja' %}
     <a href="{{ url_for('strona_startowa') }}"><input type="button" id="main_page" value="Strona główna"></a>
+    {% endif %}
     <p>VotePlus &copy; 2021</p>
 </footer>

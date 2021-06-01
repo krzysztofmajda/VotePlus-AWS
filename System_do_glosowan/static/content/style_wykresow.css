@@ -383,7 +383,7 @@ html, body {
     }
 }
 
-@media all and (min-width: 1001px) and (max-width: 1380px){
+@media all and (min-width: 1001px) and (max-width: 1460px){
     .title{
         margin-top: 20px;
         font-size: 18px;

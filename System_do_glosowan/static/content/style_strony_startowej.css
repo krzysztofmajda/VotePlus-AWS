@@ -111,12 +111,11 @@ html, body {
     font-style: italic;
 }
 
-    #sign_in:hover, #sign_in:focus, #log_in:hover, #log_in:focus, #log_out:hover, #log_out:focus
-    {
-        outline: none;
-        background-color: #006699;
-        border: 1px solid #006699;
-    }
+#sign_in:hover, #sign_in:focus, #log_in:hover, #log_in:focus, #log_out:hover, #log_out:focus{
+    outline: none;
+    background-color: #006699;
+    border: 1px solid #006699;
+}
 
 #footer{
     clear: both;
@@ -129,7 +128,7 @@ html, body {
     margin-top: 5px;
 }
 
-@media all and (max-width: 400px){
+@media all and (max-width: 460px){
     #logo{
         margin-top: 25px;
     }
@@ -193,7 +192,7 @@ html, body {
     }
 }
 
-@media all and (min-width: 500px) and (max-width: 1000px){
+@media all and (min-width: 461px) and (max-width: 1000px){
     #logo{
         margin-top: 35px;
     }

@@ -2,12 +2,106 @@
 <html lang="pl">
 <head>
     <meta charset="utf-8">
+    <style>
+        html, body {
+            font-family: Trebuchet MS, sans-serif;
+            font-style: italic;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            height: auto;
+        }
+
+        td, th {
+            width: 30%;
+        }
+
+        th {
+            background: #3399cc;
+            text-align: center;
+            color: white;
+        }
+
+        #logo {
+            margin-top: 3vw;
+            text-align: center;
+            margin-bottom: 1vw
+        }
+
+        #title {
+            margin-top: 2vw;
+            margin-bottom: 2vw;
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            width: 60%;
+        }
+
+        .picture {
+            text-align: center;
+        }
+
+        .panel_wrapper {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            margin-left: 2vw;
+            margin-top: 1vw;
+        }
+
+        .question {
+            font-weight: bold
+        }
+
+        .one_question {
+            background-color: #e8eaf6;
+            height: auto;
+            padding: 5px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .one_answer {
+            background-color: #e8eaf6;
+            height: auto;
+            padding: 5px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        #vote_title {
+            font-weight: bold;
+            margin-top: 1vw;
+            margin-bottom: 1vw;
+        }
+
+        #footer {
+            display: block;
+            height: auto;
+            justify-content: center;
+            margin-top: 1.5vw;
+            width: auto;
+        }
+
+            #footer p {
+                color: #888;
+                font-size: 1.2vw;
+                text-align: center
+            }
+    </style>
 </head>
 <body>
     <div id="container">
-        <!--<div id="logo">
-            <img src="/static/images/logo.png" alt="Logo aplikacji">
-        </div>-->
+        <div id="logo">
+            <img src="{{logo}}" alt="Logo aplikacji" width="150" height="135">
+        </div>
         <div class="panel_wrapper">
             <div id="title">
                 Tytuł głosowania: {{data[0]}} <br>
@@ -17,9 +111,9 @@
                 Koniec: {{data[4]}} <br> <br>
                 Liczba osób uprawnionych do głosowania: {{authorized}}<br>
                 Oddanych głosów: {{cast}}<br>
-                w tym głosów nieważnych: {{invalid}}
+                w tym głosów nieważnych: {{invalid}}<br><br>
             </div>
-            <div id="vote_title">
+            <div id="vote_title" style="font-weight: bold">
                 Lista pytań z odpowiedziami: <br> <br>
             </div>
             <div class="box">
@@ -58,6 +152,40 @@
                                 <img src="{{images[i]}}" alt="wykres">
                             </div>
                         </li>
+                        {% if data[1] == 'Jawne' %}
+                        <li>
+                            <div class="info">
+                                Lista odpowiedzi uczestników głosowania dla pytania: {{question[0]}}: <br>
+                            </div>
+                            <div class="users_list">
+                                <table>
+                                    <tr>
+                                        <th>Imię</th>
+                                        <th>Nazwisko</th>
+                                        <th>Wybrana odpowiedź</th>
+                                    </tr>
+                                    {% for user in users[i] %}
+                                    <tr>
+                                        {% if user[0] is none %}
+                                        <td>NN</td>
+                                        <td>NN</td>
+                                        {% else %}
+                                        <td>{{user[0]}}</td>
+                                        <td>{{user[1]}}</td>
+                                        {% endif %}
+                                        {% if user[2] == '0' %}
+                                        <td><i>Nie oddano głosu</i></td>
+                                        {% elif user[3] is none %}
+                                        <td><i>Oddano głos nieważny</i></td>
+                                        {% else %}
+                                        <td>{{user[3]}}</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </li>
+                        {% endif %}
                         {% else %}
                         <li class="one_question">
                             <div class="question">
@@ -67,6 +195,36 @@
                         {% endfor %}
                     </ul>
                 </div>
+                {% if data[1] == 'Niejawne' and (log_user == 0 or log_user == data[5]) %}
+                <div class="info">
+                    Lista uczestników głosowania:
+                </div>
+                <div class="users_list" style="width: 60%">
+                    <table>
+                        <tr>
+                            <th>Imię</th>
+                            <th>Nazwisko</th>
+                            <th>Czy na liście obecności?</th>
+                        </tr>
+                        {% for user in users %}
+                        <tr>
+                            {% if user[0] is none %}
+                            <td>NN</td>
+                            <td>NN</td>
+                            {% else %}
+                            <td>{{user[0]}}</td>
+                            <td>{{user[1]}}</td>
+                            {% endif %}
+                            {% if user[2] == '1' %}
+                            <td>Tak</td>
+                            {% else %}
+                            <td>Nie</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div id="footer">

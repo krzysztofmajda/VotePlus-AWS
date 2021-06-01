@@ -101,7 +101,7 @@ def group_copy_info():
     return out
 
 def copy_users_info(i):
-    out = ("Kopiowanie użytkowników zakończone pomyślnie. " + str(i) + " użytkowników zostało dodanych do głosowania.")
+    out = ["Kopiowanie użytkowników zakończone pomyślnie.", (str(i) + " użytkowników zostało dodanych do głosowania.")]
     return out
 
 def delete_question_info():
@@ -235,3 +235,12 @@ def poll_results_info():
            "Oddanych głosów:", "w tym głosów nieważnych:", "Lista pytań z odpowiedziami dla głosowania:",
            "Brak odpowiedzi dla tego pytania", "Brak pytań dla tego głosowania"]
     return out
+
+def edit_poll_error_info(type):
+    if type == "No questions":
+        info = "Nie możesz dodać głosowania bez ani jednego pytania"
+    elif type == "Too less answers":
+        info = "Nie możesz dodać głosowania, w którym pytania nie mają przynajmniej dwóch odpowiedzi"
+    else:
+        info = "Nie możesz dodać głosowania, w którym biorą udział mniej niż dwaj uczestnicy"
+    return info

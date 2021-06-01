@@ -1,7 +1,14 @@
 html, body {
     margin: auto;
     height: auto;
-    width: auto
+    width: auto;
+    font-family: Trebuchet MS, sans-serif;
+    font-style: italic;
+}
+
+#container {
+    height: auto;
+    margin-bottom: -29px;
 }
 
 #logo {
@@ -13,7 +20,6 @@ html, body {
     height: 10vw;
     width: 11vw
 }
-
 
 .info {
     color: #000;
@@ -112,6 +118,8 @@ html, body {
 }
 
 .customButton {
+    font-family: Trebuchet MS, sans-serif;
+    font-style: italic;
     background: #039;
     border: 0.045vw solid #009;
     color: #fff;
@@ -141,6 +149,8 @@ html, body {
 }
 
 #main_page {
+    font-family: Trebuchet MS, sans-serif;
+    font-style: italic;
     background: #039;
     border: 0.045vw solid #009;
     color: #fff;
@@ -171,7 +181,7 @@ table {
     width: 70%;
 }
 
-footer {
+#footer {
     display: block;
     height: auto;
     justify-content: center;
@@ -179,7 +189,7 @@ footer {
     width: auto;
 }
 
-footer p {
+#footer p {
     color: #888;
     font-size: 1.2vw;
     text-align: center

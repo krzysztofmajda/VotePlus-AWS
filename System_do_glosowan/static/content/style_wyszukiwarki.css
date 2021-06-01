@@ -25,32 +25,6 @@ html, body {
     flex-direction: column;
 }
 
-#from_another {
-    margin-top: 20px;
-    text-align: center;
-}
-
-#copy {
-    width: auto;
-    height: 32px;
-    padding: 5px 13px;
-    border: 1px solid #0099cc;
-    color: white;
-    text-shadow: 0 0 1px black;
-    background: #3399cc;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px 5px 5px 5px;
-    font-family: Trebuchet MS, sans-serif;
-    font-style: italic;
-}
-
-#copy:hover, #copy:focus{
-    outline: none;
-    background-color: #bfd6e2;
-    border: 1px solid #bfd6e2;
-}
-
 #user{
     margin: auto;
     margin-top: 20px;
@@ -101,15 +75,6 @@ html, body {
     font-size: 15px;
 }
 
-
-#who{
-    font-family: Trebuchet MS, sans-serif;
-    font-style: italic;
-    text-align: center;
-    margin-top: 35px;
-    font-size: 15px; 
-}
-
 .users_list{
     margin-top: 5px;
     margin: auto;
@@ -133,13 +98,13 @@ html, body {
 .text{
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;
-    width: calc(100% - 90px);
+    width: calc(100% - 185px);
     font-size: 14px;
     padding: 5px;
 }
 
 .buttons{
-    width: 90px;
+    width: 185px;
 }
 
 .edit_button {
@@ -283,12 +248,12 @@ html, body {
 
     .edit_button{
         font-size: 11px;
-        width: auto;
+        width: 60px;
     }
 
     .delete_button{
         font-size: 11px;
-        width: auto;
+        width: 60px;
     }
 
     #main_page {
@@ -362,12 +327,12 @@ html, body {
 
     .edit_button{
         font-size: 12px;
-        width: auto;
+        width: 60px;
     }
 
     .delete_button{
         font-size: 12px;
-        width: auto;
+        width: 60px;
     }
 
     #main_page {
@@ -395,6 +360,14 @@ html, body {
     .users_list{
         width: 70%;
     }
+
+    .text{
+        width: calc(100% - 185px);
+    }
+    
+    .buttons{
+        width: 185px;
+    }
 }
 
 @media all and (min-width: 881px) and (max-width: 1280px){
@@ -406,6 +379,14 @@ html, body {
 
     .users_list{
         width: 70%;
+    }
+
+    .text{
+        width: calc(100% - 185px);
+    }
+    
+    .buttons{
+        width: 185px;
     }
 }
 
