@@ -239,7 +239,7 @@ html, body {
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;
     font-size: 12px;
-    width: 100px;
+    width: auto;
     height: auto;
     padding: 5px 13px;
     border: 1px solid #000099;

@@ -7,22 +7,26 @@
     <title>VotePlus</title>
 </head>
 <body>
-<div id="logo">
-    <img src="/static/images/logo.png" alt="Logo aplikacji">
-</div>
-<div class="panel">
-    <div class="info">
-        <p>{{info[0]}}<br>{{glosowanie}}<br>{{info[1]}}<br>{{info[2]}}</p>
+<div id="container">
+    <div id="logo">
+        <img src="/static/images/logo.png" alt="Logo aplikacji">
     </div>
-    <div id="lower">
-        <a href="{{url_for('glosuj')}}" class="lowerButton"><input type="button" class="customButton" value="NIE"></a>
-        <form method="POST" class="lowerButton">
-            <a href="{{url_for('anulowanie_oddania_glosu')}}"><input type="button" class="customButton" value="TAK"></a>
-        </form>
+    <div class="panel_wrapper">
+        <div class="panel">
+            <div class="info">
+                <p>{{info[0]}}<br>{{glosowanie}}<br>{{info[1]}}<br>{{info[2]}}</p>
+            </div>
+            <div id="lower">
+                <a href="{{url_for('glosuj')}}" class="lowerButton"><input type="button" class="customButton" value="Nie"></a>
+                <form method="POST" class="lowerButton">
+                    <a href="{{url_for('anulowanie_oddania_glosu')}}"><input type="button" class="customButton" value="Tak"></a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <p>VotePlus &copy; 2021</p>
     </div>
 </div>
 </body>
 </html>
-<footer>
-    <p>VotePlus &copy; 2021</p>
-</footer>

@@ -43,7 +43,7 @@ html, body {
     background: #fff;
     border: 0.045vw solid #069;
     box-shadow: 0 0 0.1vw #069;
-    font: .9vw calibri;
+    font-size: .9vw;
     letter-spacing: -0.05vw;
     margin: 2vw auto;
     width: 45%;
@@ -155,12 +155,12 @@ html, body {
     border: 0.045vw solid #009;
     color: #fff;
     display: flex;
-    font: .9vw calibri;
+    font-size: .9vw;
     justify-content: center;
     margin: 0 auto;
     padding: 0.3vw 0.55vw;
     text-shadow: 0 0 0.045vw #000;
-    width: 7vw
+    width: auto;
 }
 
 .lowerButton {
@@ -218,8 +218,6 @@ table {
 
 .text {
     float: left;
-    font-family: Trebuchet MS, sans-serif;
-    font-style: italic;
     font-size: 14px;
     margin-top: 5px;
 }

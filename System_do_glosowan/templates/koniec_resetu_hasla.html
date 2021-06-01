@@ -7,22 +7,26 @@
     <title>VotePlus</title>
 </head>
 <body>
-<div id="logo">
-    <img src="/static/images/logo.png" alt="Logo aplikacji" width="150" height="135">
-</div>
-<div class="panel">
-    <form method="post">
-        <div class="info" id="message">
-            <label>{{info}}</label>
+<div id="container">
+    <div id="logo">
+        <img src="/static/images/logo.png" alt="Logo aplikacji" width="150" height="135">
+    </div>
+    <div class="panel_wrapper">
+        <div class="panel">
+            <form method="post">
+                <div class="info" id="message">
+                    <label>{{info}}</label>
+                </div>
+                <div id="lower">
+                    <a href="{{url_for('logowanie')}}" class="lowerButton"><input type="button" class="customButton" value="Zaloguj się"></a>
+                </div>
+            </form>
         </div>
-        <div id="lower">
-            <a href="{{url_for('logowanie')}}" class="lowerButton"><input type="button" id="sign_in" class="customButton" value="Zaloguj się"></a>
-        </div>
-    </form>
+    </div>
+    <div id="footer">
+        <a href="{{ url_for('strona_startowa') }}"><input type="button" id="main_page" value="Strona główna"></a>
+        <p>VotePlus &copy; 2021</p>
+    </div>
 </div>
 </body>
 </html>
-<footer>
-    <a href="{{ url_for('strona_startowa') }}"><input type="button" id="main_page" value="Strona główna"></a>
-    <p>VotePlus &copy; 2021</p>
-</footer>

@@ -7,22 +7,26 @@
     <title>VotePlus</title>
 </head>
 <body>
-<div id="logo">
-    <img src="/static/images/logo.png" alt="Logo aplikacji">
-</div>
-<div class="panel">
-    <div class="info">
-        <p>{{info[0]}}<br>{{odpowiedz}} {{info[1]}}</p>
+<div id="container">
+    <div id="logo">
+        <img src="/static/images/logo.png" alt="Logo aplikacji">
     </div>
-    <div id="lower">
-        <a href="{{ url_for('anulowanie_usuniecia_odpowiedzi') }}" class="lowerButton"><input type="button" class="customButton" value="NIE"></a>
-        <form method="POST" class="lowerButton">
-            <input type="submit" class="customButton" value="TAK">
-        </form>
+    <div class="panel_wrapper">
+        <div class="panel">
+            <div class="info">
+                <p>{{info[0]}}<br>{{odpowiedz}} {{info[1]}}</p>
+            </div>
+            <div id="lower">
+                <a href="{{ url_for('anulowanie_usuniecia_odpowiedzi') }}" class="lowerButton"><input type="button" class="customButton" value="Nie"></a>
+                <form method="POST" class="lowerButton">
+                    <input type="submit" class="customButton" value="Tak">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <p>VotePlus &copy; 2021</p>
     </div>
 </div>
 </body>
 </html>
-<footer>
-    <p>VotePlus &copy; 2021</p>
-</footer>
