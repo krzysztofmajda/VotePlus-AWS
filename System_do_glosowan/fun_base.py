@@ -220,7 +220,7 @@ def delete_serially_user():
             cur.execute('DELETE FROM inactive_user WHERE user_id = (%s)',(user[0],))
             cur.execute('DELETE FROM password WHERE user_id = (%s)',(user[0],))
             cur.execute('DELETE FROM users WHERE user_id = (%s)',(user[0],))
-            #fun_mail.delete_serially_user(user[2], user[3])
+            fun_mail.delete_serially_user(user[2], user[3])
         con.commit()
         cur.close()
     else:
@@ -518,9 +518,9 @@ def get_polls_for_delete_or_cancel(name=''):
     time = fun.get_time_for_cancel_poll()
     print(time)
     if name == '':
-        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s) ORDER BY end_datetime DESC',(time,))
+        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND end_datetime>(%s) AND title NOT LIKE (%s) ORDER BY end_datetime DESC',(time,"%[UNIEWAŻNIONE]%"))
     else:
-        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s) ORDER BY end_datetime DESC',("%"+name+"%",time))
+        cur.execute('SELECT poll_id, title, start_datetime FROM poll WHERE poll_id != 0 AND title LIKE (%s) AND end_datetime>(%s) AND title NOT LIKE (%s) ORDER BY end_datetime DESC',("%"+name+"%",time,"%[UNIEWAŻNIONE]%"))
     polls = cur.fetchall()
     if polls is None:
         polls = []
