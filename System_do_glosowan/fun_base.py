@@ -1,10 +1,10 @@
 from System_do_glosowan import app, fun, fun_mail
 from flask_mysqldb import MySQL
 
-app.config['MYSQL_HOST']='eu-cdbr-west-01.cleardb.com' #'localhost'
-app.config['MYSQL_USER']='b1146c15b19209' #'root'
-app.config['MYSQL_PASSWORD']=fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
-app.config['MYSQL_DB']='heroku_310c29efb085c8d' #'voting'
+app.config['MYSQL_HOST']='localhost' #'eu-cdbr-west-01.cleardb.com' #'localhost'
+app.config['MYSQL_USER']='root' #'b1146c15b19209' #'root'
+app.config['MYSQL_PASSWORD']='' #fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
+app.config['MYSQL_DB']='voting' #'heroku_310c29efb085c8d' #'voting'
 mysql=MySQL(app)
 
 def if_loging(login, password):
@@ -325,9 +325,9 @@ def get_poll_name(poll_id):
 def get_group_for_select(current_group, name=''):
     cur = mysql.connection.cursor()
     if name == '':
-        cur.execute('SELECT group_id, name FROM `group` WHERE group_id != 0 AND group_id != (%s)',(current_group,))
+        cur.execute('SELECT group_id, name FROM `group` WHERE group_id != 0 AND group_id != (%s) ORDER BY group_id DESC',(current_group,))
     else:
-        cur.execute('SELECT group_id, name FROM `group` WHERE group_id != 0 AND group_id != (%s) AND name LIKE (%s)',(current_group,("%"+name+"%")))
+        cur.execute('SELECT group_id, name FROM `group` WHERE group_id != 0 AND group_id != (%s) AND name LIKE (%s) ORDER BY group_id DESC',(current_group,("%"+name+"%")))
     groups = cur.fetchall()
     cur.close()
     if groups is None:
@@ -379,7 +379,7 @@ def polls_for_user_to_vote(pid):
     cur.execute('SELECT poll.poll_id, poll.title, poll.end_datetime FROM poll INNER JOIN user_group ON poll.group_id=user_group.group_id WHERE user_group.user_id=(%s) AND user_group.if_voted!=(%s) AND poll.start_datetime<=(%s) AND poll.end_datetime>=(%s) AND poll.title NOT LIKE (%s) ORDER BY end_datetime ASC',(pid,'1',time,time,"%[UNIEWAŻNIONE]%"))
     polls = cur.fetchall()
     cur.close()
-    return polls
+    return remove_wrong_poll_from_list(polls)
 
 def add_question(poll_id, question):
     con = mysql.connection
@@ -786,3 +786,20 @@ def get_voters_for_question(question_id, poll_id):
     users = cur.fetchall()
     cur.close()
     return users
+
+def remove_wrong_poll_from_list(poll_list):
+    inx_to_pop=[]
+    for inx, poll in enumerate(poll_list):
+        questions = get_all_question_with_answers_for_poll(poll[0])
+        if questions == []:
+            inx_to_pop.append(inx)
+        else:
+            for question in questions:
+                if len(question[1]) < 2:
+                    inx_to_pop.append(inx)
+        added_users = added_user_to_poll(poll[0])
+        if len(added_users) < 2:
+            inx_to_pop.append(inx)
+    for i in inx_to_pop:
+        poll_list.pop(i)
+    return poll_list

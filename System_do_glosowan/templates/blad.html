@@ -15,7 +15,13 @@
         <form method="post">
             <div id="panel">
                 <div id="message">
+                    {% if site_type == 'błąd_serwera' %}
+                    <label>{{info[0]}}</label><br>
+                    <label>{{info[1]}}</label><br><br>
+                    <label>{{info[2]}}</label>
+                    {% else %}
                     <label>{{info}}</label>
+                    {% endif %}
                 </div>
                 <div id="lower">
                     <div class="buttons">
@@ -41,6 +47,8 @@
                         {% else %}                       
                             <a href="{{url_for('zarzadzaj_uczestnikami')}}"><input type="button" id="sign_in" value="Powrót"></a>                     
                         {% endif %}
+                        {% elif site_type == 'błąd_serwera' %}
+                            <a href="{{url_for('strona_startowa')}}"><input type="button" id="sign_in" value="Strona główna"></a>
                         {% endif %}
                     </div>
                 </div>

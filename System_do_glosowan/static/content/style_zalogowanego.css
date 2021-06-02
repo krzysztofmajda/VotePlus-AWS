@@ -227,7 +227,7 @@ html, body {
     font-size: 12px;
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;
-    width: 100px;
+    width: auto;
     height: auto;
     padding: 5px 13px;
     border: 1px solid #000099;

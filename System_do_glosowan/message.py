@@ -244,3 +244,7 @@ def edit_poll_error_info(type):
     else:
         info = "Nie możesz dodać głosowania, w którym biorą udział mniej niż dwaj uczestnicy"
     return info
+
+def server_error_info(e):
+    out = ["UPS", "Coś poszło nie tak", e]
+    return out

@@ -73,7 +73,6 @@ html, body {
     margin-left: 10px;
     width: 90px;
     outline: 5px solid #0099cc;
-    -moz-outline-radius: 0px 5px 5px 0px; 
 }
 
 #search{
@@ -178,10 +177,10 @@ html, body {
     border: 1px solid #bfd6e2;
 }
 
-.delete_button:hover, .delete_button:focus{
+.delete_button:hover, .delete_button:focus {
     outline: none;
-    background-color: #bfd6e2;
-    border: 1px solid #bfd6e2;
+    background-color: #CC0000;
+    border: 1px solid #CC0000;
 }
 
 #main_page:hover, #main_page:focus {
@@ -257,7 +256,6 @@ html, body {
         width: 70px;
         height: 20px;
         outline: 5px solid #0099cc;
-        -moz-outline-radius: 0px 5px 5px 0px; 
     }
 
     #search{

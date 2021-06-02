@@ -386,7 +386,7 @@ def zarzadzaj_glosowaniem():
 @app.route('/zakonczenie_edycji_glosowania', methods=['GET','POST'])
 def zakonczenie_edycji_glosowania():
     questions = fun_base.get_all_question_with_answers_for_poll(session['edit_poll_id'])
-    added_users=fun_base.added_user_to_poll(session['edit_poll_id'])
+    added_users = fun_base.added_user_to_poll(session['edit_poll_id'])
     if questions == []:
         session['edit_poll_error'] = "No questions"
         return redirect('/blad_edycji_glosowania')
@@ -884,4 +884,5 @@ def pdf():
 @app.errorhandler(404)
 @app.errorhandler(500)
 def strona_nie_istnieje(e):
-    return redirect('/strona_startowa')
+    return render_template('blad.html', site_type='błąd_serwera', info=message.server_error_info(e))
+    #return redirect('/strona_startowa')
