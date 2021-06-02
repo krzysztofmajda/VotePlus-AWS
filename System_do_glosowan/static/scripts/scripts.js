@@ -43,9 +43,9 @@ function checkPassword(registerForm) {
             return false;
         }
     }
-    if (typeof (mail) != 'undefined' && mail != null)
-    {
-        if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail) || + !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){
+
+    if (typeof (mail) != 'undefined' && mail != null) {
+        if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail) || +!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
             alert("Nieprawidłowy adres email!")
             return (false)
         }

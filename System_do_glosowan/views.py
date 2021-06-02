@@ -885,4 +885,3 @@ def pdf():
 @app.errorhandler(500)
 def strona_nie_istnieje(e):
     return render_template('blad.html', site_type='błąd_serwera', info=message.server_error_info(e))
-    #return redirect('/strona_startowa')
