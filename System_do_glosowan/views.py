@@ -127,8 +127,7 @@ def reset_hasla():
                     session['pass_change_fail'] = '1'
                     session['pass_change_fail_type'] = 'reset'
                     return redirect('/blad_zmiany_hasla')
-        else:
-            return redirect('/koniec_resetu_hasla')
+        return redirect('/koniec_resetu_hasla')
     return render_template('reset.html', info=message.reset_info())
 
 @app.route('/koniec_resetu_hasla', methods=['GET','POST'])
