@@ -144,11 +144,11 @@ def anulowanie_resetu_hasla():
 
 @app.route('/zalogowany', methods=['GET','POST'])
 def zalogowany():
+    session.pop('activate_user_id', None)
     if 'activate_user_id' in session:
         return redirect('/aktywacja_konta')
     if not 'log_in_user_id' in session:
         return redirect('/logowanie')
-    session.pop('activate_user_id', None)
     session.pop('activate_success', None)
     session.pop('pass_change_success', None)
     session.pop('pass_change_fail', None)
