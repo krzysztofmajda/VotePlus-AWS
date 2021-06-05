@@ -20,10 +20,9 @@ function checkPassword(registerForm) {
     mail = registerForm.user_email.value;
 
     if (password1 != password2) {
-        //alert("\nPodane hasła nie są identyczne!")
         Swal.fire({
             title: 'Błąd!',
-            text: 'Wpisane przez ciebie hasła nie są identyczne',
+            text: 'Wpisane hasła nie są identyczne',
             icon: 'error',
             confirmButtonText: 'Powrót'
         })
@@ -31,28 +30,48 @@ function checkPassword(registerForm) {
     }
     if (registerForm.user_year.value != 'undefined' && lata != null)
         birthyear = registerForm.user_year.value;
-    if (birthyear.length == 0) {
-        alert("\nPodaj rok urodzenia!")
-        return false;
+        if (birthyear.length == 0) {
+            Swal.fire({
+                title: 'Błąd!',
+                text: 'Podaj rok urodzenia!',
+                icon: 'error',
+                confirmButtonText: 'Powrót'
+            })
+            return false;
     }
 
     if (typeof (imie) != 'undefined' && imie != null) {
         if (/[^a-zA-Z]/.test(imie)) {
-            alert('Nieprawidłowe znaki w polu Imię')
+            Swal.fire({
+                title: 'Błąd!',
+                text: 'Nieprawidłowe znaki w polu "Imię"!',
+                icon: 'error',
+                confirmButtonText: 'Powrót'
+            })
             return false;
         }
     }
 
     if (typeof (nazwisko) != 'undefined' && nazwisko != null) {
         if (/[^a-zA-Z]/.test(nazwisko)) {
-            alert('Nieprawidłowe znaki w polu Nazwisko')
+            Swal.fire({
+                title: 'Błąd!',
+                text: 'Nieprawidłowe znaki w polu Nazwisko!',
+                icon: 'error',
+                confirmButtonText: 'Powrót'
+            })
             return false;
         }
     }
 
     if (typeof (mail) != 'undefined' && mail != null) {
         if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail) || +!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
-            alert("Nieprawidłowy adres email!")
+            Swal.fire({
+                title: 'Błąd!',
+                text: 'Nieprawidłowy adres email!',
+                icon: 'error',
+                confirmButtonText: 'Powrót'
+            })
             return (false)
         }
     }
@@ -104,19 +123,39 @@ function checkDates() {
     finishDate.setMinutes(parseInt(finishTimeMinute))
     let now = new Date();
     if (startDate > finishDate) {
-        alert("\nPodane daty rozpoczęcia i zakończenia głosowania są nieprawidłowe!")
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Data końca głosowania jest wcześniejsza niż data rozpoczęcia!',
+            icon: 'error',
+            confirmButtonText: 'Powrót'
+        })
         return false
     }
     if (startDate < now) {
-        alert("\nPodane daty rozpoczęcia i zakończenia głosowania są nieprawidłowe!")
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Podana data rozpoczęcia głosowania jest z przeszłości. Podaj datę co najmniej o 10 minut póżniejszą od aktualnej!',
+            icon: 'error',
+            confirmButtonText: 'Powrót'
+        })
         return false
     }
     if (finishDate - startDate < 300000) {
-        alert("\nMinimalny czas trwania głosowania wynosi 5 minut!")
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Minimalny czas trwania głosowania wynosi 5 minut!',
+            icon: 'error',
+            confirmButtonText: 'Powrót'
+        })
         return false
     }
     if (startDate - now < 600000) {
-        alert("\nMinimalny czas startu głosowania od teraz to 10 minut!")
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Minimalny czas startu głosowania od teraz to 10 minut!',
+            icon: 'error',
+            confirmButtonText: 'Powrót'
+        })
         return false
     }
 }
