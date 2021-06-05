@@ -34,7 +34,18 @@ function checkPassword(registerForm) {
     imie = registerForm.user_name.value;
     nazwisko = registerForm.user_surname.value;
     mail = registerForm.user_email.value;
-
+    username = registerForm.username.value;
+    if (username != 'undefined' && username != null) {
+        let letterNumber = /^[0-9a-zA-Z]+$/;
+        if ((!username.match(letterNumber))) {
+            Swal.fire({
+                title: 'Błąd!',
+                text: 'Nazwa użytkownika powinna składać się wyłącznie z liter oraz cyfr!',
+                icon: 'error',
+                confirmButtonText: 'Powrót'
+            })
+        }
+    }
     if (password1 != password2) {
         Swal.fire({
             title: 'Błąd!',
@@ -46,14 +57,14 @@ function checkPassword(registerForm) {
     }
     if (registerForm.user_year.value != 'undefined' && lata != null)
         birthyear = registerForm.user_year.value;
-        if (birthyear.length == 0) {
-            Swal.fire({
-                title: 'Błąd!',
-                text: 'Podaj rok urodzenia!',
-                icon: 'error',
-                confirmButtonText: 'Powrót'
-            })
-            return false;
+    if (birthyear.length == 0) {
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Podaj rok urodzenia!',
+            icon: 'error',
+            confirmButtonText: 'Powrót'
+        })
+        return false;
     }
 
     if (typeof (imie) != 'undefined' && imie != null) {
