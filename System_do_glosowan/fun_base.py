@@ -1,10 +1,10 @@
 from System_do_glosowan import app, fun, fun_mail
 from flask_mysqldb import MySQL
 
-app.config['MYSQL_HOST']='localhost' #'eu-cdbr-west-01.cleardb.com' #'localhost'
-app.config['MYSQL_USER']='root' #'b1146c15b19209' #'root'
-app.config['MYSQL_PASSWORD']='' #fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
-app.config['MYSQL_DB']='voting' #'heroku_310c29efb085c8d' #'voting'
+app.config['MYSQL_HOST']='eu-cdbr-west-01.cleardb.com' 'localhost'
+app.config['MYSQL_USER']='b1146c15b19209' #'root'
+app.config['MYSQL_PASSWORD']=fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
+app.config['MYSQL_DB']='heroku_310c29efb085c8d' #'voting'
 mysql=MySQL(app)
 
 def if_loging(login, password):
