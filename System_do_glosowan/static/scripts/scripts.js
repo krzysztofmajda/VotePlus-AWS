@@ -1,3 +1,19 @@
+let start_date = document.getElementById('start_date');
+if (typeof (start_date) != 'undefined' && start_date != null) {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("start_date").setAttribute("min", today);
+}
+
 let lata = document.getElementById('lata');
 if (typeof (lata) != 'undefined' && lata != null) {
     let podaj = "Podaj datę urodzenia";
