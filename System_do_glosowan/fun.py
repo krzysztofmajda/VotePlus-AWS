@@ -195,3 +195,19 @@ def logo_for_pdf():
     pngimstr = "data:image/png;base64,"
     pngimstr += base64.b64encode(pngim.getvalue()).decode('utf8')
     return pngimstr
+
+def answer_question_split(a, maxlen):
+    b=list(map(str, a.split(' ')))
+    out = ""
+    for ind, x in enumerate(b):
+        if ind != 0:
+            out = out + " "
+        if len(x) > maxlen:
+            for i in range(0,len(x),maxlen-1):
+                if len(x)-i<=maxlen-1:
+                    out = out + x[i:]
+                else:
+                    out = out + x[i:i+maxlen-1] + "- "
+        else:
+            out = out + x
+    return out

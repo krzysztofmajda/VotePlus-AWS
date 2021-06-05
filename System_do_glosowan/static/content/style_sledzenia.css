@@ -141,7 +141,6 @@ html, body {
 }
 
 #main_page {
-    display: block;
     margin: 0 auto;
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;

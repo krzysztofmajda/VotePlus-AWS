@@ -248,3 +248,11 @@ def edit_poll_error_info(type):
 def server_error_info(e):
     out = ["UPS", "Coś poszło nie tak", e]
     return out
+
+def question_error_info():
+    out = "Takie pytanie już istnieje w tym głosowaniu"
+    return out
+
+def answer_error_info():
+    out = "Taka odpowiedź już istnieje w tym pytaniu"
+    return out

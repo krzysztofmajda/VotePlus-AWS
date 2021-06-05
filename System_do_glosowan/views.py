@@ -503,13 +503,24 @@ def glosowanie_do_edycji():
 def dodaj_pytanie():
     if not 'edit_poll_id' in session:
         return redirect('/zarzadzaj_glosowaniem')
+    session.pop('add_question_error', None)
     if request.method == "POST":
         question = request.form.get('question')
-        fun_base.add_question(session['edit_poll_id'], question)
+        for q in fun_base.get_questions_for_poll(session['edit_poll_id']):
+            if q[0] == question:
+                session['add_question_error'] = "Error"
+                return redirect('/blad_dodania_pytania')
+        fun_base.add_question(session['edit_poll_id'], fun.answer_question_split(question,64))
         session['edited_poll'] = "Edited"
         return redirect('/zarzadzaj_glosowaniem')
     return render_template('dodawanie_pytania.html', name=fun_base.get_poll_name(session['edit_poll_id']),
                            info=message.add_questions_info())
+
+@app.route('/blad_dodania_pytania')
+def blad_dodania_pytania():
+    if not 'add_question_error' in session:
+        return redirect('/dodaj_pytanie')
+    return render_template('blad.html', site_type='dodanie_pytania', info=message.question_error_info())
 
 @app.route('/dodaj_odpowiedz', methods=['GET','POST'])
 def dodaj_odpowiedz():
@@ -517,25 +528,46 @@ def dodaj_odpowiedz():
         return redirect('/zarzadzaj_glosowaniem')
     if request.method == "POST":
         answer = request.form.get('answer')
-        fun_base.add_answer(session['question_id_for_add_answer'], answer, session['edit_poll_id'])
+        for a in fun_base.get_answers_for_poll(session['question_id_for_add_answer']):
+            if a[0] == answer:
+                session['add_answer_error'] = "Error"
+                return redirect('/blad_dodania_odpowiedzi')
+        fun_base.add_answer(session['question_id_for_add_answer'], fun.answer_question_split(answer,64), session['edit_poll_id'])
         session.pop('question_id_for_add_answer', None)
         session['edited_poll'] = "Edited"
         return redirect('/zarzadzaj_glosowaniem')
     return render_template('dodawanie_odpowiedzi.html', name=fun_base.get_question_name(session['question_id_for_add_answer']),
                            info=message.add_answers_info())
 
+@app.route('/blad_dodania_odpowiedzi')
+def blad_dodania_odpowiedzi():
+    if not 'add_answer_error' in session:
+        return redirect('/dodaj_odpowiedz')
+    return render_template('blad.html', site_type='dodanie_odpowiedzi', info=message.answer_error_info())
+
 @app.route('/edytuj_pytanie', methods=['GET','POST'])
 def edytuj_pytanie():
     if not 'edit_question_id' in session:
         return redirect('/zarzadzaj_glosowaniem')
+    session.pop('edit_question_error', None)
     if request.method == "POST":
         question = request.form.get('question')
-        fun_base.edit_question(session['edit_question_id'], question)
-        session.pop('edit_question_id', None)
+        for q in fun_base.get_questions_for_poll(session['edit_poll_id']):
+            if q[0] == question:
+                session['edit_question_error'] = "Error"
+                return redirect('/blad_edycji_pytania')
+        fun_base.edit_question(session['edit_question_id'], fun.answer_question_split(question,64))
         session['edited_poll'] = "Edited"
+        session.pop('edit_question_id', None)    
         return redirect('/zarzadzaj_glosowaniem')
     return render_template('edycja_pytania_odpowiedzi.html', czy_pytanie=True, pytanie=fun_base.get_question_name(session['edit_question_id']),
                            info=message.edit_question_answer_info())
+
+@app.route('/blad_edycji_pytania')
+def blad_edycji_pytania():
+    if not 'edit_question_error' in session:
+        return redirect('/edytuj_pytanie')
+    return render_template('blad.html', site_type='edycja_pytania', info=message.question_error_info())
 
 @app.route('/edytuj_odpowiedz', methods=['GET','POST'])
 def edytuj_odpowiedz():
@@ -543,13 +575,23 @@ def edytuj_odpowiedz():
         return redirect('/zarzadzaj_glosowaniem')
     if request.method == "POST":
         answer = request.form.get('question')
-        fun_base.edit_answer(session['edit_answer_id'], answer)
-        session.pop('edit_answer_id', None)
-        session.pop('answer_question_id', None)
+        for a in fun_base.get_answers_for_poll(session['answer_question_id']):
+            if a[0] == answer:
+                session['edit_answer_error'] = "Error"
+                return redirect('/blad_edycji_odpowiedzi')
+        fun_base.edit_answer(session['edit_answer_id'], fun.answer_question_split(answer,64))
         session['edited_poll'] = "Edited"
+        session.pop('edit_answer_id', None)
+        session.pop('answer_question_id', None)       
         return redirect('/zarzadzaj_glosowaniem')
     return render_template('edycja_pytania_odpowiedzi.html', czy_pytanie=False, pytanie=fun_base.get_question_name(session['answer_question_id']),
                            odpowiedz=fun_base.get_answer_name(session['edit_answer_id']), info=message.edit_question_answer_info())
+
+@app.route('/blad_edycji_odpowiedzi')
+def blad_edycji_odpowiedzi():
+    if not 'edit_answer_error' in session:
+        return redirect('/edytuj_odpowiedz')
+    return render_template('blad.html', site_type='edycja_odpowiedzi', info=message.answer_error_info())
 
 @app.route('/edytuj_dane_glosowania', methods=['GET','POST'])
 def edytuj_dane_glosowania():

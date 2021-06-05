@@ -2,6 +2,7 @@ html, body {
     margin: auto;
     height: auto;
     width: auto;
+    text-align: center;
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;
 }
@@ -154,7 +155,6 @@ html, body {
     background: #039;
     border: 0.045vw solid #009;
     color: #fff;
-    display: flex;
     font-size: .9vw;
     justify-content: center;
     margin: 0 auto;

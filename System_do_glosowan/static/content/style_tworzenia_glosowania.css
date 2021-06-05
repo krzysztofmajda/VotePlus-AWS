@@ -1,5 +1,8 @@
 html, body {
     height: auto;
+    text-align: center;
+    font-family: Trebuchet MS, sans-serif;
+    font-style: italic;
 }
 
 #container {
@@ -122,7 +125,6 @@ html, body {
 }
 
 #main_page {
-    display: block;
     margin: 0 auto;
     font-size: 12px;
     font-family: Trebuchet MS, sans-serif;

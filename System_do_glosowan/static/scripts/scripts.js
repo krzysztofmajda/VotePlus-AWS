@@ -20,7 +20,13 @@ function checkPassword(registerForm) {
     mail = registerForm.user_email.value;
 
     if (password1 != password2) {
-        alert("\nPodane hasła nie są identyczne!")
+        //alert("\nPodane hasła nie są identyczne!")
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Wpisane przez ciebie hasła nie są identyczne',
+            icon: 'error',
+            confirmButtonText: 'Powrót'
+        })
         return false;
     }
     if (registerForm.user_year.value != 'undefined' && lata != null)
