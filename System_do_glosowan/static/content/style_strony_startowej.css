@@ -1,6 +1,5 @@
 html, body {
     height: auto;
-    text-align: center;
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;
 }
@@ -118,9 +117,10 @@ html, body {
     border: 1px solid #006699;
 }
 
-#footer{
+#footer {
     clear: both;
     margin-top: 3%;
+    text-align: center;
 }
 
 #footer p{

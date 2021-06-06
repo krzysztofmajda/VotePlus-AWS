@@ -256,3 +256,11 @@ def question_error_info():
 def answer_error_info():
     out = "Taka odpowiedź już istnieje w tym pytaniu"
     return out
+
+def pdf_info():
+    out = ["Tytuł głosowania:", "Opis:", "Typ:", "Początek:", "Koniec:", "Liczba osób uprawnionych do głosowania:",
+           "Oddanych głosów:", "w tym głosów nieważnych:", "Lista pytań z odpowiedziami:", "Brak odpowiedzi dla tego pytania",
+           "Lista odpowiedzi uczestników głosowania dla pytania:", "Imię", "Nazwisko", "Wybrana odpowiedź", "NN",
+           "Nie oddano głosu", "Oddano głos nieważny", "Brak pytań dla tego głosowania", "Lista uczestników głosowania:",
+           "Czy na liście obecności?", "Tak", "Nie"]
+    return out

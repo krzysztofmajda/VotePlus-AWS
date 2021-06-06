@@ -1,9 +1,9 @@
 let start_date = document.getElementById('start_date');
 if (typeof (start_date) != 'undefined' && start_date != null) {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1; //January is 0!
+    let yyyy = today.getFullYear();
     if (dd < 10) {
         dd = '0' + dd
     }
@@ -68,7 +68,7 @@ function checkPassword(registerForm) {
     }
 
     if (typeof (imie) != 'undefined' && imie != null) {
-        if (/[^a-zA-Z]/.test(imie)) {
+        if (!/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(imie)) {
             Swal.fire({
                 title: 'Błąd!',
                 text: 'Nieprawidłowe znaki w polu "Imię"!',
@@ -80,7 +80,7 @@ function checkPassword(registerForm) {
     }
 
     if (typeof (nazwisko) != 'undefined' && nazwisko != null) {
-        if (/[^a-zA-Z]/.test(nazwisko)) {
+        if (!/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(nazwisko)) {
             Swal.fire({
                 title: 'Błąd!',
                 text: 'Nieprawidłowe znaki w polu Nazwisko!',

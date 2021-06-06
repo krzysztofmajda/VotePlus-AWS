@@ -104,17 +104,17 @@
         </div>
         <div class="panel_wrapper">
             <div id="title">
-                Tytuł głosowania: {{data[0]}} <br>
-                Opis: {{data[2]}} <br>
-                Typ: {{data[1]}} <br>
-                Początek: {{data[3]}} <br>
-                Koniec: {{data[4]}} <br> <br>
-                Liczba osób uprawnionych do głosowania: {{authorized}}<br>
-                Oddanych głosów: {{cast}}<br>
-                w tym głosów nieważnych: {{invalid}}<br><br>
+                {{info[0]}} {{data[0]}} <br>
+                {{info[1]}} {{data[2]}} <br>
+                {{info[2]}} {{data[1]}} <br>
+                {{info[3]}} {{data[3]}} <br>
+                {{info[4]}} {{data[4]}} <br> <br>
+                {{info[5]}} {{authorized}}<br>
+                {{info[6]}} {{cast}}<br>
+                {{info[7]}} {{invalid}}<br><br>
             </div>
             <div id="vote_title" style="font-weight: bold">
-                Lista pytań z odpowiedziami: <br> <br>
+                {{info[8]}} <br> <br>
             </div>
             <div class="box">
                 <div class="question_list">
@@ -140,7 +140,7 @@
                                     {% else %}
                                     <li class="one_answer">
                                         <div class="answer">
-                                            Brak odpowiedzi dla tego pytania
+                                            {{info[9]}}
                                         </div>
                                     </li>
                                     {% endfor %}
@@ -155,28 +155,28 @@
                         {% if data[1] == 'Jawne' %}
                         <li>
                             <div class="info">
-                                Lista odpowiedzi uczestników głosowania dla pytania: {{question[0]}}: <br>
+                                {{info[10]}} {{question[0]}}: <br>
                             </div>
                             <div class="users_list">
                                 <table>
                                     <tr>
-                                        <th>Imię</th>
-                                        <th>Nazwisko</th>
-                                        <th>Wybrana odpowiedź</th>
+                                        <th>{{info[11]}}</th>
+                                        <th>{{info[12]}}</th>
+                                        <th>{{info[13]}}</th>
                                     </tr>
                                     {% for user in users[i] %}
                                     <tr>
                                         {% if user[0] is none %}
-                                        <td>NN</td>
-                                        <td>NN</td>
+                                        <td>{{info[14]}}</td>
+                                        <td>{{info[14]}}</td>
                                         {% else %}
                                         <td>{{user[0]}}</td>
                                         <td>{{user[1]}}</td>
                                         {% endif %}
                                         {% if user[2] == '0' %}
-                                        <td><i>Nie oddano głosu</i></td>
+                                        <td><i>{{info[15]}}</i></td>
                                         {% elif user[3] is none %}
-                                        <td><i>Oddano głos nieważny</i></td>
+                                        <td><i>{{info[16]}}</i></td>
                                         {% else %}
                                         <td>{{user[3]}}</td>
                                         {% endif %}
@@ -189,7 +189,7 @@
                         {% else %}
                         <li class="one_question">
                             <div class="question">
-                                Brak pytań dla tego głosowania
+                                {{info[17]}}
                             </div>
                         </li>
                         {% endfor %}
@@ -197,28 +197,28 @@
                 </div>
                 {% if data[1] == 'Niejawne' and (log_user == 0 or log_user == data[5]) %}
                 <div class="info">
-                    Lista uczestników głosowania:
+                    {{info[18]}}
                 </div>
                 <div class="users_list" style="width: 60%">
                     <table>
                         <tr>
-                            <th>Imię</th>
-                            <th>Nazwisko</th>
-                            <th>Czy na liście obecności?</th>
+                            <th>{{info[11]}}</th>
+                            <th>{{info[12]}}</th>
+                            <th>{{info[19]}}</th>
                         </tr>
                         {% for user in users %}
                         <tr>
                             {% if user[0] is none %}
-                            <td>NN</td>
-                            <td>NN</td>
+                            <td>{{info[14]}}</td>
+                            <td>{{info[14]}}</td>
                             {% else %}
                             <td>{{user[0]}}</td>
                             <td>{{user[1]}}</td>
                             {% endif %}
                             {% if user[2] == '1' %}
-                            <td>Tak</td>
+                            <td>{{info[20]}}</td>
                             {% else %}
-                            <td>Nie</td>
+                            <td>{{info[21]}}</td>
                             {% endif %}
                         </tr>
                         {% endfor %}

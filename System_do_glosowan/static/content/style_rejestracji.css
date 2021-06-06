@@ -2,7 +2,6 @@ html, body {
     margin: auto;
     height: auto;
     width: auto;
-    text-align: center;
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;
 }
@@ -187,6 +186,7 @@ table {
     justify-content: center;
     margin-top: 1.5vw;
     width: auto;
+    text-align: center;
 }
 
 #footer p {

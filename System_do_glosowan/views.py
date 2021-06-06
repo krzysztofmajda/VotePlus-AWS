@@ -915,7 +915,7 @@ def pdf():
     html = render_template("pdf.html", data=fun_base.get_poll_full_info(session['results_poll_id']), questions=questions,
                            images=fun.gen_plots(questions), cast=cast, invalid=invalid, authorized=authorized,
                            logo=fun.logo_for_pdf(), users=fun_base.get_voters(session['results_poll_id']),
-                           log_user=session['log_in_user_id'])
+                           log_user=session['log_in_user_id'], info=message.pdf_info())
     response = make_response(fun.generate_pdf(html))
     response.headers["Content-Type"] = "application/pdf"
     response.headers["Content-Disposition"] = ("attachment; filename=raport "+fun.generate_current_datetime()+".pdf")

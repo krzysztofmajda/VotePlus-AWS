@@ -1,6 +1,5 @@
 html, body {
     height: auto;
-    text-align: center;
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;
 }
@@ -50,7 +49,6 @@ html, body {
     margin-left: 10px;
     width: 90px;
     outline: 5px solid #0099cc;
-    -moz-outline-radius: 0px 5px 5px 0px; 
 }
 
 #search{
@@ -161,6 +159,7 @@ html, body {
 #footer {
     clear: both;
     margin-top: 3%;
+    text-align: center;
 }
 
 #main_page {
@@ -224,7 +223,6 @@ html, body {
         width: 70px;
         height: 20px;
         outline: 5px solid #0099cc;
-        -moz-outline-radius: 0px 5px 5px 0px; 
     }
 
     #search{
