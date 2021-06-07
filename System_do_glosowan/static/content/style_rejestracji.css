@@ -63,8 +63,10 @@ html, body {
     float: left;
     margin: 0.7vw 1vw 0.7vw 1vw;
     color: black;
-    font-size: 1.2vw;
-    text-shadow: 0 0 0.045vw silver;
+    font-size: 1.1vw;
+    font-family: Trebuchet MS, sans-serif;
+    font-style: italic;
+    text-shadow: 0 0 1px silver;
 }
 
 #login_username, #password {
@@ -84,6 +86,16 @@ html, body {
 
 .formField {
     width: 90%;
+    float: right;
+    border: 0.045vw solid #006699;
+    outline: 0.3vw solid #bfd6e2;
+    font-size: 1vw;
+    margin: 0.7vw 1.5vw 0.7vw auto;
+    height: 1.5vw;
+}
+
+.formField1 {
+    width: 91.3%;
     float: right;
     border: 0.045vw solid #006699;
     outline: 0.3vw solid #bfd6e2;
@@ -178,6 +190,15 @@ table {
 
 .right {
     width: 70%;
+}
+
+.counter {
+    text-align: right;
+    margin-right: 2vw;
+    margin-top: -0.5vw;
+    margin-bottom: -1vw;
+    color: #9b9b9e;
+    font-size: 12px;
 }
 
 #footer {

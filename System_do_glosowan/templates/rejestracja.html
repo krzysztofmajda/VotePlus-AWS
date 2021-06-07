@@ -21,7 +21,14 @@
                             <label for="username" class="label">{{info[0]}}</label>
                         </td>
                         <td class="right">
-                            <input type="text" id="username" class="formField" name="username" minlength=2 maxlength=100 required>
+                            <input type="text" id="username" class="formField" name="username" minlength=2 maxlength=100 onkeyup="charcountusername(this.value)" required>
+                        </td>
+                    </tr>
+                    <tr style="margin-top: -1vw; margin-bottom: -1vw">
+                        <td class="left">
+                        </td>
+                        <td class="right">
+                            <div id="counterUsername" class="counter"></div>
                         </td>
                     </tr>
                     <tr>
@@ -29,7 +36,14 @@
                             <label for="user_name" class="label">{{info[1]}}</label>
                         </td>
                         <td class="right">
-                            <input type="text" id="user_name" class="formField" name="user_name" minlength=2 maxlength=50 required>
+                            <input type="text" id="user_name" class="formField" name="user_name" minlength=2 maxlength=50 required onkeyup="charcountuser_name(this.value)">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left">
+                        </td>
+                        <td class="right">
+                            <div id="counterUser_name" class="counter"></div>
                         </td>
                     </tr>
                     <tr>
@@ -37,7 +51,14 @@
                             <label for="user_surname" class="label">{{info[2]}}</label>
                         </td>
                         <td class="right">
-                            <input type="text" id="user_surname" class="formField" name="user_surname" minlength=2 maxlength=50 required>
+                            <input type="text" id="user_surname" class="formField" name="user_surname" minlength=2 maxlength=50 onkeyup="charcountusersurname(this.value)" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left">
+                        </td>
+                        <td class="right">
+                            <div id="counterUsersurname" class="counter"></div>
                         </td>
                     </tr>
                     <tr>
@@ -69,7 +90,7 @@
                             <label for="user_sex" class="label">{{info[6]}}</label>
                         </td>
                         <td class="right">
-                            <select id="user_sex" name="user_sex" class="formField" required>
+                            <select id="user_sex" name="user_sex" class="formField1" required>
                                 <option selected></option>
                                 <option value="Kobieta">Kobieta</option>
                                 <option value="Mężczyzna">Mężczyzna</option>

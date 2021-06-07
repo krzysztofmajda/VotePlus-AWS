@@ -510,7 +510,7 @@ def dodaj_pytanie():
             if q[0] == question:
                 session['add_question_error'] = "Error"
                 return redirect('/blad_dodania_pytania')
-        fun_base.add_question(session['edit_poll_id'], fun.answer_question_split(question,64))
+        fun_base.add_question(session['edit_poll_id'], fun.answer_question_split(question,38))
         session['edited_poll'] = "Edited"
         return redirect('/zarzadzaj_glosowaniem')
     return render_template('dodawanie_pytania.html', name=fun_base.get_poll_name(session['edit_poll_id']),
@@ -532,7 +532,7 @@ def dodaj_odpowiedz():
             if a[0] == answer:
                 session['add_answer_error'] = "Error"
                 return redirect('/blad_dodania_odpowiedzi')
-        fun_base.add_answer(session['question_id_for_add_answer'], fun.answer_question_split(answer,64), session['edit_poll_id'])
+        fun_base.add_answer(session['question_id_for_add_answer'], fun.answer_question_split(answer,35), session['edit_poll_id'])
         session.pop('question_id_for_add_answer', None)
         session['edited_poll'] = "Edited"
         return redirect('/zarzadzaj_glosowaniem')
@@ -556,7 +556,7 @@ def edytuj_pytanie():
             if q[0] == question:
                 session['edit_question_error'] = "Error"
                 return redirect('/blad_edycji_pytania')
-        fun_base.edit_question(session['edit_question_id'], fun.answer_question_split(question,64))
+        fun_base.edit_question(session['edit_question_id'], fun.answer_question_split(question,38))
         session['edited_poll'] = "Edited"
         session.pop('edit_question_id', None)    
         return redirect('/zarzadzaj_glosowaniem')
@@ -579,7 +579,7 @@ def edytuj_odpowiedz():
             if a[0] == answer:
                 session['edit_answer_error'] = "Error"
                 return redirect('/blad_edycji_odpowiedzi')
-        fun_base.edit_answer(session['edit_answer_id'], fun.answer_question_split(answer,64))
+        fun_base.edit_answer(session['edit_answer_id'], fun.answer_question_split(answer,35))
         session['edited_poll'] = "Edited"
         session.pop('edit_answer_id', None)
         session.pop('answer_question_id', None)       

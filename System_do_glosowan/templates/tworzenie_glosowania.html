@@ -20,9 +20,11 @@
         <form method="post" onSubmit="return checkDates()">
             <div id="panel">
                 <label for="title" id="title_label">Tytuł:</label>
-                <input type="text" id="title" name="title" minlength=2 maxlength=60 required>
+                <input type="text" id="title" name="title" minlength=2 maxlength=60 onkeyup="charcountTitle(this.value)" required>
+                <div class="pustocounter"></div><div id="counterTitle" class="counter"></div>
                 <label for="more" id="more_label">Opis:</label>
-                <input type="text" id="more" name="more" minlength=2 maxlength=480 required>
+                <input type="text" id="more" name="more" minlength=2 maxlength=480 onkeyup="charcountMore(this.value)" required>
+                <div class="pustocounter"></div><div id="counterMore" class="counter"></div>
                 <label for="type" id="type_label">{{info[1]}}</label>
                 <select id="type" name="type" required>
                     <option value="Wybierz typ">Wybierz typ</option>
@@ -30,9 +32,9 @@
                     <option value="Jawne">Jawne</option>
                 </select>
                 <label for="start_date" id="start_date_label">{{info[2]}}</label>
-                <input type="date" id=start_date name=start_date required>
+                <input type="date" id=start_date name=start_date onfocusout="setMinimumFinishDate()" required>
                 <label for="start_time" id="start_time_label">{{info[3]}}</label>
-                <input type="time" id=start_time name=start_time required>
+                <input type="time" id=start_time name=start_time onfocusout="setMinimumFinishTime()" required>
                 <label for="finish_date" id="finish_date_label">{{info[4]}}</label>
                 <input type="date" id=finish_date name=finish_date required>
                 <label for="finish_time" id="finish_time_label">{{info[5]}}</label>

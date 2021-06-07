@@ -26,9 +26,10 @@ function setMinimumFinishDate() {
 let lata = document.getElementById('lata');
 if (typeof (lata) != 'undefined' && lata != null) {
     let podaj = "Podaj datę urodzenia";
-    let x = "", i;
+    let x = "",
+        i;
     let data = new Date();
-    x = x + "<select id=\"user_year\" name=\"user_year\" class=\"formField\">";
+    x = x + "<select id=\"user_year\" name=\"user_year\" class=\"formField1\">";
     x = x + "<option selected></option>"
     for (i = 1901; i <= data.getFullYear(); i++) {
         x = x + "<option value=\"" + i + "\">" + i + "</option>"
@@ -78,7 +79,7 @@ function checkPassword(registerForm) {
     }
 
     if (typeof (imie) != 'undefined' && imie != null) {
-        if (/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(imie)) {
+        if (/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\- ]/.test(imie)) {
             Swal.fire({
                 title: 'Błąd!',
                 text: 'Nieprawidłowe znaki w polu "Imię"!',
@@ -90,7 +91,7 @@ function checkPassword(registerForm) {
     }
 
     if (typeof (nazwisko) != 'undefined' && nazwisko != null) {
-        if (/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ␣\-]/.test(nazwisko)) {
+        if (/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\- ]/.test(nazwisko)) {
             Swal.fire({
                 title: 'Błąd!',
                 text: 'Nieprawidłowe znaki w polu Nazwisko!',
@@ -195,4 +196,29 @@ function checkDates() {
         })
         return false
     }
+}
+
+function charcountusername(str) {
+    let lng = str.length;
+    document.getElementById("counterUsername").innerHTML = lng + '/100';
+}
+
+function charcountuser_name(str) {
+    let lng = str.length;
+    document.getElementById("counterUser_name").innerHTML = lng + '/50';
+}
+
+function charcountusersurname(str) {
+    let lng = str.length;
+    document.getElementById("counterUsersurname").innerHTML = lng + '/50';
+}
+
+function charcountTitle(str) {
+    let lng = str.length;
+    document.getElementById("counterTitle").innerHTML = lng + '/60';
+}
+
+function charcountMore(str) {
+    let lng = str.length;
+    document.getElementById("counterMore").innerHTML = lng + '/480';
 }

@@ -52,7 +52,7 @@ html, body {
     border-radius: 5px; 
 }
 
-#title, #more, #type, #start_date, #start_time, #finish_date, #finish_time{
+#title, #more, #type, #start_date, #start_time, #finish_date, #finish_time {
     width: 62%;
     height: 20px;
     float: right;
@@ -81,6 +81,27 @@ html, body {
     font-family: Trebuchet MS, sans-serif;
     font-style: italic;
     text-shadow: 0 0 1px silver;
+}
+
+.pustocounter{
+    width: 27%;
+    float: left;
+    min-height: 10px;
+    margin-top:-5px;
+}
+
+.counter{
+    width: 62%;
+    height: 10px;
+    float: right;
+    margin-right: 22px;
+    margin-top:-5px;
+    min-height: 10px;
+    color: #9b9b9e;
+    font-size: 12px;
+    font-family: Trebuchet MS, sans-serif;
+    font-style: italic;
+    text-align: right;
 }
 
 #do_nothing, #go
