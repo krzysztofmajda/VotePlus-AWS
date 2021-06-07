@@ -12,7 +12,16 @@ if (typeof (start_date) != 'undefined' && start_date != null) {
     }
     today = yyyy + '-' + mm + '-' + dd;
     document.getElementById("start_date").setAttribute("min", today);
+
 }
+
+function setMinimumFinishDate() {
+    let startdate = new Date();
+    startdate = document.getElementById("start_date").value
+    console.log(startdate)
+    document.getElementById("finish_date").setAttribute("min", startdate);
+}
+
 
 let lata = document.getElementById('lata');
 if (typeof (lata) != 'undefined' && lata != null) {
@@ -46,6 +55,7 @@ function checkPassword(registerForm) {
             })
         }
     }
+
     if (password1 != password2) {
         Swal.fire({
             title: 'Błąd!',
@@ -80,7 +90,7 @@ function checkPassword(registerForm) {
     }
 
     if (typeof (nazwisko) != 'undefined' && nazwisko != null) {
-        if (/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(nazwisko)) {
+        if (/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ␣\-]/.test(nazwisko)) {
             Swal.fire({
                 title: 'Błąd!',
                 text: 'Nieprawidłowe znaki w polu Nazwisko!',
@@ -99,7 +109,7 @@ function checkPassword(registerForm) {
                 icon: 'error',
                 confirmButtonText: 'Powrót'
             })
-            return (false)
+            return false;
         }
     }
 }
