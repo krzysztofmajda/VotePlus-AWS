@@ -68,7 +68,7 @@ function checkPassword(registerForm) {
     }
 
     if (typeof (imie) != 'undefined' && imie != null) {
-        if (!/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(imie)) {
+        if (/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(imie)) {
             Swal.fire({
                 title: 'Błąd!',
                 text: 'Nieprawidłowe znaki w polu "Imię"!',
@@ -80,7 +80,7 @@ function checkPassword(registerForm) {
     }
 
     if (typeof (nazwisko) != 'undefined' && nazwisko != null) {
-        if (!/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(nazwisko)) {
+        if (/[^a-zA-ZA-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(nazwisko)) {
             Swal.fire({
                 title: 'Błąd!',
                 text: 'Nieprawidłowe znaki w polu Nazwisko!',
