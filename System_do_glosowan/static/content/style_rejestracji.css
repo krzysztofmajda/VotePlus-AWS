@@ -84,7 +84,7 @@ html, body {
     font-size: 1.1vw;
 }
 
-.formField {
+.formField formField1{
     width: 90%;
     float: right;
     border: 0.045vw solid #006699;
@@ -96,12 +96,6 @@ html, body {
 
 .formField1 {
     width: 91.3%;
-    float: right;
-    border: 0.045vw solid #006699;
-    outline: 0.3vw solid #bfd6e2;
-    font-size: 1vw;
-    margin: 0.7vw 1.5vw 0.7vw auto;
-    height: 1.5vw;
 }
 
 .formField:focus {

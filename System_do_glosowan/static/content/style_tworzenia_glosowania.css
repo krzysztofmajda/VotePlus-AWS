@@ -66,6 +66,10 @@ html, body {
     font-style: italic;
 }
 
+#type{
+    width: 62.8%;
+}
+
 #title:focus, #more:focus, #type:focus, #start_date:focus, #start_time:focus, #finish_date:focus, #finish_time:focus{
     outline: 5px solid #7e9dad;
 }

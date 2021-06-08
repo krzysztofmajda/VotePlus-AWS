@@ -191,6 +191,9 @@ html, body {
     outline: 5px solid #bfd6e2;
     font-size: 12px;
 }
+#user_sex, #user_year, #role{
+   width: 62.8%;
+}
 
 #user_name:focus, #user_surname:focus, #user_sex:focus, #user_year:focus{
     outline: 5px solid #7e9dad; 
