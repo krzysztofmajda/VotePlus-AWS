@@ -8,11 +8,10 @@ html, body {
 
 #container {
     height: auto;
-    margin-bottom: -29px;
 }
 
 #logo {
-    margin-top: 3vw;
+    margin-top: 1.5vw;
     text-align: center
 }
 
@@ -84,7 +83,7 @@ html, body {
     font-size: 1.1vw;
 }
 
-.formField formField1{
+.formField, .formField1, .datetime {
     width: 90%;
     float: right;
     border: 0.045vw solid #006699;
@@ -95,10 +94,14 @@ html, body {
 }
 
 .formField1 {
-    width: 91.3%;
+    width: 91.2%;
 }
 
-.formField:focus {
+.datetime {
+    width: 90.8%;
+}
+
+.formField:focus, .formField1:focus, .datetime:focus {
     outline: 0.3vw solid #7e9dad;
 }
 
@@ -206,7 +209,7 @@ table {
 
 #footer p {
     color: #888;
-    font-size: 15px;
+    font-size: 0.97vw;
     text-align: center
 }
 
