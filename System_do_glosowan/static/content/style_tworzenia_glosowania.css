@@ -35,7 +35,7 @@ html, body {
     font-size: 17px;
 }
 
-#panel {
+#panel, .edit_panel{
     width: 750px; 
     height: 425px;
     padding-top: 15px;
@@ -50,6 +50,10 @@ html, body {
     -webkit-border-radius: 5px; 
     -moz-border-radius: 5px; 
     border-radius: 5px; 
+}
+
+.edit_panel{
+    height: auto;
 }
 
 #title, #more, #type, #start_date, #start_time, #finish_date, #finish_time {
@@ -70,11 +74,15 @@ html, body {
     width: 62.8%;
 }
 
+#start_date, #start_time, #finish_date, #finish_time{
+    width: 62.4%;
+}
+
 #title:focus, #more:focus, #type:focus, #start_date:focus, #start_time:focus, #finish_date:focus, #finish_time:focus{
     outline: 5px solid #7e9dad;
 }
 
-#title_label, #more_label, #type_label, #start_date_label, #start_time_label, #finish_date_label, #finish_time_label{
+#title_label, #more_label, #type_label, #start_date_label, #start_time_label, #finish_date_label, #finish_time_label, .label{
     width: 27%;
     float: left;
     margin-left: 12px; 
@@ -134,13 +142,13 @@ html, body {
     border: 1px solid #000099;
 }
 
-#lower 
+#lower, .lower_edit
 {
     background: #006699;
     width: 710px;
     height: 50px;
     padding: 5px 20px;
-    margin-top: 366px;
+    margin-top: 300px;
 }
 
 #footer {
