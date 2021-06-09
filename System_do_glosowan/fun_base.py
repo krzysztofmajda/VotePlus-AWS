@@ -1,10 +1,10 @@
 from System_do_glosowan import app, fun, fun_mail
 from flask_mysqldb import MySQL
 
-app.config['MYSQL_HOST']='eu-cdbr-west-01.cleardb.com' #'localhost'
-app.config['MYSQL_USER']='b1146c15b19209' #'root'
-app.config['MYSQL_PASSWORD']=fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
-app.config['MYSQL_DB']='heroku_310c29efb085c8d' #'voting'
+app.config['MYSQL_HOST'] = 'eu-cdbr-west-01.cleardb.com' #'localhost'
+app.config['MYSQL_USER'] = 'b1146c15b19209' #'root'
+app.config['MYSQL_PASSWORD'] = fun.pass_decoder('0011000001100001001101010110010000110111011000010110001101100001') #''
+app.config['MYSQL_DB'] = 'heroku_310c29efb085c8d' #'voting'
 mysql=MySQL(app)
 
 def if_loging(login, password):
@@ -770,7 +770,7 @@ def get_voters(poll_id):
 
     if poll_type == 'Jawne':
         all_users = []
-        cur.execute('SELECT question_id FROM question WHERE poll_id=(%s)',(poll_id))
+        cur.execute('SELECT question_id FROM question WHERE poll_id=(%s)',(poll_id,))
         questions = cur.fetchall()
         for question in questions:
             all_users.append(get_voters_for_question(question, poll_id))
