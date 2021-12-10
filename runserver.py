@@ -4,7 +4,7 @@ This script runs the System_do_glosowan application using a development server.
 
 from os import environ
 from System_do_glosowan import app
-
+#xd
 if __name__ == '__main__':
     HOST = environ.get('SERVER_HOST', 'localhost')
     try:
