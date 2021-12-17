@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/2beceacf-4783-4161-97b0-521fa78cc5ac/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/voteplus",
+    "appService.deploySubpath": "."
+}
