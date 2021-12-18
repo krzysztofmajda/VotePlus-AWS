@@ -1,10 +1,10 @@
 from System_do_glosowan import app, fun, fun_mail
 from flask_mysqldb import MySQL
 
-app.config['MYSQL_HOST']='localhost'
-app.config['MYSQL_USER']='root'
-app.config['MYSQL_PASSWORD']=''
-app.config['MYSQL_DB']='voting'
+app.config['MYSQL_HOST']='34.134.220.174'
+app.config['MYSQL_USER']='kris'
+app.config['MYSQL_PASSWORD']='Password321'
+app.config['MYSQL_DB']='vote'
 mysql=MySQL(app)
 
 def if_loging(login, password):
